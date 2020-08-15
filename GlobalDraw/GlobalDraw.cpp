@@ -56,6 +56,8 @@ HWND CreateRenderWindow(unsigned uWidth, unsigned uHeight)
 	return hWnd;
 }
 
+auto duration = 0ull;
+
 int main()
 {
 	unsigned uZoom = 60;
@@ -77,9 +79,14 @@ int main()
 
 	// enter the main loop:
 
+	auto t1 = std::chrono::high_resolution_clock::now();
+
 	MSG msg;
 	while (TRUE)
 	{
+		auto t2 = std::chrono::high_resolution_clock::now();
+		duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+		
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
@@ -117,6 +124,10 @@ int main()
 					auto rect = D2D1::RectF(50,50,100,100);
 					pRenderTarget->FillRectangle(rect, pInst->GetBrush(RGB(0, 255, 0)));
 
+					// 1000000 microseconds = 1 second
+					auto fps = duration ? 1000000ull / duration : 9999999ull;
+					printf("FPS: %llu | %llu\n", fps, duration);
+
 					return pRenderTarget->EndDraw();
 				}
 			);
@@ -153,6 +164,8 @@ int main()
 		{
 			pDX11_Renderer->GetDX11_BackgroundRenderer()->Flip();
 		}
+
+		t1 = t2;
 	}
 
 	delete pDD_Overlay;
