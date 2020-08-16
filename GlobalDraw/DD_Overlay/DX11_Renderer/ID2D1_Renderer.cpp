@@ -20,6 +20,7 @@ HRESULT ID2D1_Renderer::CreateSurface()
 {
 	printf(" > Creating IDXGISurface...\n");
 	{
+		//auto hResult = this->pDestTexture->QueryInterface( __uuidof(IDXGISurface), (void**)&this->m_pDestSurface );
 		auto hResult = this->pDestTexture->QueryInterface< IDXGISurface >(&this->m_pDestSurface);
 		if (hResult != S_OK)
 		{
@@ -38,7 +39,7 @@ HRESULT ID2D1_Renderer::CreateRenderTarget()
 	D2D1_RENDER_TARGET_PROPERTIES oProps = { };
 	{
 		oProps.type = D2D1_RENDER_TARGET_TYPE_DEFAULT;
-		oProps.pixelFormat = D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED);
+		oProps.pixelFormat = D2D1::PixelFormat(DXGI_FORMAT_R8G8B8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED);
 		oProps.dpiX = (FLOAT)this->uWidth;
 		oProps.dpiY = (FLOAT)this->uHeight;
 	}
@@ -55,16 +56,16 @@ HRESULT ID2D1_Renderer::CreateRenderTarget()
 	return S_OK;
 }
 
-ID2D1SolidColorBrush* ID2D1_Renderer::GetBrush(COLORREF rgb)
+ID2D1SolidColorBrush* ID2D1_Renderer::GetBrush(RGBA rgba)
 {
-	if (m_mSolidBrushes.find(rgb) != m_mSolidBrushes.end())
-		return m_mSolidBrushes.at(rgb);
+	if (m_mSolidBrushes.find(rgba.dwRGBA) != m_mSolidBrushes.end())
+		return m_mSolidBrushes.at(rgba.dwRGBA);
 	else
 	{
 		printf(" > Creating ID2D1SolidColorBrush...\n");
 		ID2D1SolidColorBrush* pBrush = nullptr;
 		{
-			auto hResult = this->m_pRenderTarget->CreateSolidColorBrush({ (FLOAT)GetRValue(rgb),(FLOAT)GetGValue(rgb),(FLOAT)GetBValue(rgb),255.f }, &pBrush);
+			auto hResult = this->m_pRenderTarget->CreateSolidColorBrush({(FLOAT)rgba.sRGBA.r,(FLOAT)rgba.sRGBA.g,(FLOAT)rgba.sRGBA.b,1.f/255.f*(FLOAT)rgba.sRGBA.a}, &pBrush);
 			if (hResult != S_OK)
 			{
 				printf(" !      m_pRenderTarget->CreateSolidColorBrush\n");
@@ -73,7 +74,7 @@ ID2D1SolidColorBrush* ID2D1_Renderer::GetBrush(COLORREF rgb)
 			}
 			printf("    [+] pBrush = %#p\r\n", pBrush);
 		}
-		return m_mSolidBrushes[rgb] = pBrush;
+		return m_mSolidBrushes[rgba.dwRGBA] = pBrush;
 	}
 }
 
@@ -100,9 +101,13 @@ ID2D1_Renderer::~ID2D1_Renderer()
 	{
 		for (auto& i : this->m_mSolidBrushes)
 		{
-			printf(" > Cleaning up Brush with Color RGB(%u,%u,%u)\n", GetRValue(i.first), GetGValue(i.first), GetBValue(i.first));
-			i.second->Release();
-			i.second = nullptr;
+			if (i.second != nullptr)
+			{
+				auto color = i.second->GetColor();
+				printf(" > Cleaning up Brush with Color RGBA(%f,%f,%f,%f)\n", color.r, color.g, color.b, color.a);
+				i.second->Release();
+				i.second = nullptr;
+			}
 		}
 		this->m_mSolidBrushes.clear();
 	}

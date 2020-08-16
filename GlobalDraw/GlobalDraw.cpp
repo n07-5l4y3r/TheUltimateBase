@@ -119,10 +119,10 @@ int main()
 					pRenderTarget->BeginDraw();
 					pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
-					pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black)); //Transparent
+					pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black, 0.F)); //Transparent
 
 					auto rect = D2D1::RectF(50,50,100,100);
-					pRenderTarget->FillRectangle(rect, pInst->GetBrush(RGB(0, 255, 0)));
+					pRenderTarget->FillRectangle(rect, pInst->GetBrush(RGBA({0,255,0,255/2})));
 
 					// 1000000 microseconds = 1 second
 					auto fps = duration ? 1000000ull / duration : 9999999ull;
@@ -162,7 +162,7 @@ int main()
 		}
 		// Render Preview 
 		{
-			pDX11_Renderer->GetDX11_BackgroundRenderer()->Flip();
+			//pDX11_Renderer->GetDX11_BackgroundRenderer()->Flip();
 		}
 
 		t1 = t2;

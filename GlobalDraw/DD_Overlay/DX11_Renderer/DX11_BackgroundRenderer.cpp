@@ -326,18 +326,23 @@ HRESULT DX11_BackgroundRenderer::BltTextureToSurface(D3D11_TEXTURE2D_DESC& desc,
 
 	{
 		auto pd = dd.lPitch - (dd.dwWidth * 4);
-		auto setpixel = [dd](unsigned x, unsigned y, COLORREF rgb)
+		auto setpixel = [dd](unsigned x, unsigned y, BYTE rgba[4])
 		{
 			DWORD Offset = y * dd.lPitch + x * (dd.ddpfPixelFormat.dwRGBBitCount >> 3);
-			*((LPDWORD)((DWORD)dd.lpSurface + Offset)) = rgb;
+			auto Ptr = ((BYTE*)((DWORD)dd.lpSurface + Offset));
+			Ptr[0] = rgba[2];
+			Ptr[1] = rgba[1];
+			Ptr[2] = rgba[0];
+			Ptr[3] = rgba[3];
 		}; 
 		for (auto h = 0u; h < dd.dwHeight; h++)
 		{
 			for (auto w = 0u; w < dd.dwWidth; w++)
 			{
-				setpixel(w, h, RGB(sptr[2], sptr[1], sptr[0]));
+				BYTE rgba[4] = { sptr[0], sptr[1], sptr[2], sptr[3] };
+				setpixel(w, h, rgba);
 
-				sptr += sizeof(COLORREF);
+				sptr += sizeof(BYTE[4]);
 			}
 			// pitch
 			//sptr += rowPitch;

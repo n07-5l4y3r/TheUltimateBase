@@ -2,6 +2,16 @@
 
 #include <inc.hpp>
 
+union RGBA {
+	struct {
+		BYTE r;
+		BYTE g;
+		BYTE b;
+		BYTE a;
+	} sRGBA;
+	DWORD dwRGBA;
+};
+
 class ID2D1_Renderer {
 	unsigned uWidth, uHeight;
 	HWND hWnd;
@@ -11,13 +21,13 @@ class ID2D1_Renderer {
 	IDXGISurface* m_pDestSurface = nullptr;
 	ID2D1RenderTarget* m_pRenderTarget = nullptr;
 	//
-	std::map< COLORREF, ID2D1SolidColorBrush* > m_mSolidBrushes;
+	std::map< DWORD, ID2D1SolidColorBrush* > m_mSolidBrushes;
 private:
 	HRESULT CreateFactory();
 	HRESULT CreateSurface();
 	HRESULT CreateRenderTarget();
 public:
-	ID2D1SolidColorBrush* GetBrush(COLORREF rgb);
+	ID2D1SolidColorBrush* GetBrush(RGBA rgba);
 	typedef HRESULT(* UpdateCallback)(ID2D1_Renderer* pInst, ID2D1RenderTarget* pRenderTarget);
 	HRESULT Update(UpdateCallback pCallback);
 public:

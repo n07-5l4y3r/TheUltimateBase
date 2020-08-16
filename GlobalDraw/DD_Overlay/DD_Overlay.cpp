@@ -1,5 +1,25 @@
 #include "DD_Overlay.hpp"
 
+LPDDPIXELFORMAT DD_Overlay::DefinePixelFormat()
+{
+	printf(" > Defining PixelFormat...\n");
+	if (!this->pPixelFormat)
+	{
+		this->pPixelFormat = reinterpret_cast<LPDDPIXELFORMAT>(malloc(sizeof(DDPIXELFORMAT)));
+		{
+			this->pPixelFormat->dwSize = sizeof(DDPIXELFORMAT);
+			this->pPixelFormat->dwFlags = DDPF_RGB | DDPF_ALPHAPIXELS;
+			this->pPixelFormat->dwFourCC = 0;
+			this->pPixelFormat->dwRGBBitCount = 32;
+			this->pPixelFormat->dwRBitMask = 0x00ff0000;
+			this->pPixelFormat->dwGBitMask = 0x0000ff00;
+			this->pPixelFormat->dwBBitMask = 0x000000ff;
+			this->pPixelFormat->dwRGBAlphaBitMask = 0xff000000;
+		}
+	}
+	return this->pPixelFormat;
+}
+
 IDirectDraw7* DD_Overlay::CreateDevice()
 {
 	printf(" > Creating DirectDraw Device...\n");
@@ -83,12 +103,7 @@ LPDIRECTDRAWSURFACE7 DD_Overlay::CreateBuffer() {
 		ddsd.dwWidth = this->uWidth;                            //Specifies the width of the surface in pixels.
 		ddsd.dwHeight = this->uHeight;                          //Specifies the height of surface in pixels.
 		ddsd.dwBackBufferCount = 1u;                            //Specifies the number of back buffers associated with the surface.
-		ddsd.ddpfPixelFormat.dwSize = sizeof(DDPIXELFORMAT);    //The first parameter of the structure must contain the size of the structure
-		ddsd.ddpfPixelFormat.dwFlags = DDPF_RGB;                //The RGB data in the pixel format structure is valid.
-		ddsd.ddpfPixelFormat.dwRGBBitCount = 32;                //Specifies the number of RGB bits per pixel
-		ddsd.ddpfPixelFormat.dwRBitMask = 0xFF0000;             //Specifies the mask for red bits.
-		ddsd.ddpfPixelFormat.dwGBitMask = 0x00FF00;             //Specifies the mask for green bits.
-		ddsd.ddpfPixelFormat.dwBBitMask = 0x0000FF;             //Specifies the mask for blue bits.
+		memcpy(&ddsd.ddpfPixelFormat, this->pPixelFormat, sizeof(DDPIXELFORMAT));
 		auto hResult = this->pIDirectDraw7->CreateSurface(
 			&ddsd,              //Address of a DDSURFACEDESC2 structure that describes the requested surface.
 			//------------------------------
@@ -130,6 +145,8 @@ LPDIRECTDRAWSURFACE7 DD_Overlay::CreateBackBuffer() {
 
 DD_Overlay::DD_Overlay(unsigned width, unsigned height, HWND hWnd) : hWnd(hWnd), uWidth(width), uHeight(height) {
 	printf("\n > Creating DD_Overlay...\n");
+	if (!DefinePixelFormat())
+		return;
 	if (!CreateDevice())
 		return;
 	if (!CreatePrimary())
@@ -162,6 +179,11 @@ DD_Overlay::~DD_Overlay()
 	{
 		printf(" > Cleaning up pIDirectDraw7...\n");
 		this->pIDirectDraw7->Release();
+	}
+	if (this->pPixelFormat)
+	{
+		printf(" > Cleaning up pPixelFormat...\n");
+		delete this->pPixelFormat;
 	}
 }
 
@@ -217,13 +239,16 @@ HRESULT DD_Overlay::Update(/*DX11_BackgroundRenderer*/void* pvRenderer)
 	boundings.top = 0;
 	boundings.bottom = uHeight;
 	{
+
 		DDOVERLAYFX effects = { 0 };
 		{
 			ZeroMemory(&effects, sizeof(effects));
 			effects.dwSize = sizeof(effects);
 			effects.dckDestColorkey.dwColorSpaceHighValue = effects.dckDestColorkey.dwColorSpaceLowValue = 0; // RGB(0,0,0) == Transparent
+			effects.dwAlphaDestConstBitDepth = 24;
+			effects.dwAlphaSrcConstBitDepth = 24;
 		}
-		auto hResult = this->pBuffer->UpdateOverlay(NULL, pPrimary, &boundings, DDOVER_SHOW | DDOVER_KEYSRCOVERRIDE | DDOVER_DDFX, &effects);
+		auto hResult = this->pBuffer->UpdateOverlay(NULL, pPrimary, &boundings, DDOVER_SHOW | DDOVER_ALPHASRC | DDOVER_KEYSRCOVERRIDE | DDOVER_DDFX, &effects);
 		if (hResult != DD_OK)
 		{
 			printf(" !      pBuffer->UpdateOverlay\n");
