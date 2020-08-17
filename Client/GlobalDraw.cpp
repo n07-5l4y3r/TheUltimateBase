@@ -213,8 +213,7 @@ int main()
 	GLOBALS::pID2D1_Renderer = new ID2D1_Renderer(uWidth, uHeight, GLOBALS::pDX11_BackgroundRenderer->QuerypDXGISurface());
 
 	printf("\n > Hide Render Preview Window\n");
-	//ShowWindow(hWnd, SW_HIDE);
-	ShowWindow(hWnd, SW_MINIMIZE);
+	ShowWindow(hWnd, SW_HIDE);
 
 	printf("\n > Render Loop...\n");
 
@@ -337,13 +336,13 @@ int main()
 		}
 		// Present DirectX11 (Direct3D) [+Direct2D rendered on top of it]
 		{
-			auto hResult = GLOBALS::pDX11_BackgroundRenderer->Present();
-			if (hResult != DD_OK)
-			{
-				printf(" !      pDX11_BackgroundRenderer->Present\n");
-				printf("    [-] hResult = %#x \n", hResult);
-				//return hResult;
-			}
+			//auto hResult = GLOBALS::pDX11_BackgroundRenderer->Present();
+			//if (hResult != DD_OK)
+			//{
+			//	printf(" !      pDX11_BackgroundRenderer->Present\n");
+			//	printf("    [-] hResult = %#x \n", hResult);
+			//	//return hResult;
+			//}
 		}
 		// Flip DirectDraw
 		{
