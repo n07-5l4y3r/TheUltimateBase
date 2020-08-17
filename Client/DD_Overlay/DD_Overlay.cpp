@@ -143,6 +143,21 @@ LPDIRECTDRAWSURFACE7 DD_Overlay::CreateBackBuffer() {
 	return this->pBackBuffer;
 }
 
+IDXGISurface* DD_Overlay::QueryIDXGISurface()
+{
+	if ( this->pDXGISurface == nullptr )
+	{
+		auto hResult = this->pBackBuffer->QueryInterface(__uuidof(IDXGISurface), (void**)&this->pDXGISurface);
+		if (hResult != DD_OK)
+		{
+			printf(" !      pBackBuffer->QueryInterface<IDXGISurface>(&pDXGISurface)\n");
+			printf("    [-] hResult = %#x\r\n", hResult);
+			return nullptr;
+		}
+	}
+	return this->pDXGISurface;
+}
+
 DD_Overlay::DD_Overlay(unsigned width, unsigned height, HWND hWnd) : hWnd(hWnd), uWidth(width), uHeight(height) {
 	printf("\n > Creating DD_Overlay...\n");
 	if (!DefinePixelFormat())
@@ -185,45 +200,29 @@ DD_Overlay::~DD_Overlay()
 		printf(" > Cleaning up pPixelFormat...\n");
 		delete this->pPixelFormat;
 	}
+	if (this->pDXGISurface)
+	{
+		printf(" > Cleaning up pDXGISurface...\n");
+		this->pDXGISurface->Release();
+	}
 }
 
-HRESULT DD_Overlay::BlitDX11Resource(/*DX11_BackgroundRenderer*/void* pvRenderer)
+HRESULT DD_Overlay::Draw(HRESULT(*pCallback)(IDirectDraw7* pDevice, LPDIRECTDRAWSURFACE7 pSurface))
 {
-	auto pRenderer = reinterpret_cast<DX11_BackgroundRenderer*>(pvRenderer);
-
-	D3D11_TEXTURE2D_DESC desc = { 0 };
-	ID3D11Texture2D* pStaging = nullptr;
-	auto hResult = pRenderer->CaptureTexture(desc, pStaging);
-	if (hResult != S_OK)
 	{
-		printf(" !      pRenderer->CaptureTexture\n");
-		printf("    [-] hResult = %#x\r\n", hResult);
-		return hResult;
-	}
-	hResult = pRenderer->BltTextureToSurface(desc, pStaging, pBackBuffer);
-	if (hResult != S_OK)
-	{
-		printf(" !      pRenderer->BltTextureToSurface\n");
-		printf("    [-] hResult = %#x\r\n", hResult);
-		return hResult;
-	}
-	pStaging->Release();
-	return DD_OK;
-}
-
-HRESULT DD_Overlay::Update(/*DX11_BackgroundRenderer*/void* pvRenderer)
-{
-	auto pRenderer = reinterpret_cast<DX11_BackgroundRenderer*>(pvRenderer);
-
-	{
-		auto hResult = this->BlitDX11Resource(pRenderer);
+		auto hResult = pCallback(this->pIDirectDraw7, this->pBackBuffer);
 		if (hResult != DD_OK)
 		{
-			printf(" !      BlitDX11Resource\n");
+			printf(" !      DD_Overlay::Draw->pCallback\n");
 			printf("    [-] hResult = %#x\r\n", hResult);
 			return hResult;
 		}
 	}
+	return DD_OK;
+}
+
+HRESULT DD_Overlay::Flip()
+{
 	{
 		auto hResult = this->pBuffer->Flip(NULL, DDFLIP_WAIT);
 		if (hResult != DD_OK)
@@ -233,13 +232,17 @@ HRESULT DD_Overlay::Update(/*DX11_BackgroundRenderer*/void* pvRenderer)
 			return hResult;
 		}
 	}
+	return S_OK;
+}
+
+HRESULT DD_Overlay::UpdateOverlay()
+{
 	RECT boundings = { 0 };
 	boundings.left = 0;
 	boundings.right = uWidth;
 	boundings.top = 0;
 	boundings.bottom = uHeight;
 	{
-
 		DDOVERLAYFX effects = { 0 };
 		{
 			ZeroMemory(&effects, sizeof(effects));

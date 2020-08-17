@@ -164,16 +164,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DD_Overlay\DD_Overlay.cpp" />
-    <ClCompile Include="DD_Overlay\DX11_Renderer\DX11_BackgroundRenderer.cpp" />
-    <ClCompile Include="DD_Overlay\DX11_Renderer\DX11_Renderer.cpp" />
-    <ClCompile Include="DD_Overlay\DX11_Renderer\ID2D1_Renderer.cpp" />
+    <ClCompile Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.cpp" />
     <ClCompile Include="GlobalDraw.cpp" />
+    <ClCompile Include="ID2D1_Renderer\ID2D1_Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DD_Overlay\DD_Overlay.hpp" />
-    <ClInclude Include="DD_Overlay\DX11_Renderer\DX11_BackgroundRenderer.hpp" />
-    <ClInclude Include="DD_Overlay\DX11_Renderer\DX11_Renderer.hpp" />
-    <ClInclude Include="DD_Overlay\DX11_Renderer\ID2D1_Renderer.hpp" />
+    <ClInclude Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.hpp" />
+    <ClInclude Include="ID2D1_Renderer\ID2D1_Renderer.hpp" />
     <ClInclude Include="inc.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

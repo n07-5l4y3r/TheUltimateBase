@@ -14,23 +14,19 @@ union RGBA {
 
 class ID2D1_Renderer {
 	unsigned uWidth, uHeight;
-	HWND hWnd;
-	ID3D11Texture2D* pDestTexture;
+	IDXGISurface* pDestSurface;
 	//
 	ID2D1Factory* m_pDirect2dFactory = nullptr;
-	IDXGISurface* m_pDestSurface = nullptr;
 	ID2D1RenderTarget* m_pRenderTarget = nullptr;
 	//
 	std::map< DWORD, ID2D1SolidColorBrush* > m_mSolidBrushes;
 private:
 	HRESULT CreateFactory();
-	HRESULT CreateSurface();
 	HRESULT CreateRenderTarget();
 public:
 	ID2D1SolidColorBrush* GetBrush(RGBA rgba);
-	typedef HRESULT(* UpdateCallback)(ID2D1_Renderer* pInst, ID2D1RenderTarget* pRenderTarget);
-	HRESULT Update(UpdateCallback pCallback);
+	HRESULT Draw(HRESULT(*pCallback)(ID2D1_Renderer* pInst, ID2D1RenderTarget* pRenderTarget));
 public:
-	ID2D1_Renderer(unsigned uWidth, unsigned uHeight, HWND hWnd, ID3D11Texture2D* pDest);
+	ID2D1_Renderer(unsigned uWidth, unsigned uHeight, IDXGISurface* pDest);
 	~ID2D1_Renderer();
 };

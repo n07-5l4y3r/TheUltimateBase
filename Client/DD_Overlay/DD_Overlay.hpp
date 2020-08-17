@@ -22,16 +22,16 @@ private:
 	LPDIRECTDRAWSURFACE7	CreateBuffer();
 	LPDIRECTDRAWSURFACE7	CreateBackBuffer();
 	//
-
-	//
+	IDXGISurface*			pDXGISurface = nullptr;
+public:
+	IDXGISurface*			QueryIDXGISurface();
 public:
 	DD_Overlay(unsigned width = 1920u, unsigned height = 1080u, HWND hWnd = GetConsoleWindow());
 	~DD_Overlay();
-private:
-	//HRESULT BlitRGB32(Bitmap* src, LPDIRECTDRAWSURFACE7 dest);
-	HRESULT BlitDX11Resource(/*DX11_BackgroundRenderer*/void* pRenderer);
 public:
-	HRESULT Update(/*DX11_BackgroundRenderer*/void* pRenderer);
+	HRESULT Draw(HRESULT(*pCallback)(IDirectDraw7* pDevice, LPDIRECTDRAWSURFACE7 pSurface));
+	HRESULT Flip();
+	HRESULT UpdateOverlay();
 public:
 	HRESULT Restore();
 };

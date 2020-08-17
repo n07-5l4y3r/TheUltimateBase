@@ -16,23 +16,6 @@ HRESULT ID2D1_Renderer::CreateFactory()
 	return S_OK;
 }
 
-HRESULT ID2D1_Renderer::CreateSurface()
-{
-	printf(" > Creating IDXGISurface...\n");
-	{
-		//auto hResult = this->pDestTexture->QueryInterface( __uuidof(IDXGISurface), (void**)&this->m_pDestSurface );
-		auto hResult = this->pDestTexture->QueryInterface< IDXGISurface >(&this->m_pDestSurface);
-		if (hResult != S_OK)
-		{
-			printf(" !      pDestTexture->QueryInterface< IDXGISurface >(&m_pDestSurface)\n");
-			printf("    [-] hResult = %#x\n", hResult);
-			return hResult;
-		}
-		printf("    [+] m_pDestSurface = %#p\r\n", this->m_pDestSurface);
-	}
-	return S_OK;
-}
-
 HRESULT ID2D1_Renderer::CreateRenderTarget()
 {
 	printf(" > Creating ID2D1RenderTarget...\n");
@@ -44,7 +27,7 @@ HRESULT ID2D1_Renderer::CreateRenderTarget()
 		oProps.dpiY = (FLOAT)this->uHeight;
 	}
 	{
-		auto hResult = this->m_pDirect2dFactory->CreateDxgiSurfaceRenderTarget(this->m_pDestSurface, oProps, &this->m_pRenderTarget);
+		auto hResult = this->m_pDirect2dFactory->CreateDxgiSurfaceRenderTarget(this->pDestSurface, oProps, &this->m_pRenderTarget);
 		if (hResult != S_OK)
 		{
 			printf(" !      m_pDirect2dFactory->CreateDxgiSurfaceRenderTarget\n");
@@ -78,17 +61,24 @@ ID2D1SolidColorBrush* ID2D1_Renderer::GetBrush(RGBA rgba)
 	}
 }
 
-HRESULT ID2D1_Renderer::Update(UpdateCallback pCallback)
+HRESULT ID2D1_Renderer::Draw(HRESULT(*pCallback)(ID2D1_Renderer* pInst, ID2D1RenderTarget* pRenderTarget))
 {
-	return pCallback(this, this->m_pRenderTarget);
+	{
+		auto hResult = pCallback(this, this->m_pRenderTarget);
+		if (hResult != S_OK)
+		{
+			printf(" !      ID2D1_Renderer::Draw->pCallback\n");
+			printf("    [-] hResult = %#x\r\n", hResult);
+			return hResult;
+		}
+	}
+	return S_OK;
 }
 
-ID2D1_Renderer::ID2D1_Renderer(unsigned uWidth, unsigned uHeight, HWND hWnd, ID3D11Texture2D* pDest) : uWidth(uWidth), uHeight(uHeight), hWnd(hWnd), pDestTexture(pDest)
+ID2D1_Renderer::ID2D1_Renderer(unsigned uWidth, unsigned uHeight, IDXGISurface* pDest) : uWidth(uWidth), uHeight(uHeight), pDestSurface(pDest)
 {
 	printf("\n > Creating ID2D1_Renderer...\n");
 	if (this->CreateFactory() != S_OK)
-		return;
-	if (this->CreateSurface() != S_OK)
 		return;
 	if (this->CreateRenderTarget() != S_OK)
 		return;
@@ -115,11 +105,6 @@ ID2D1_Renderer::~ID2D1_Renderer()
 	{
 		printf(" > Cleaning up RenderTarget \n");
 		this->m_pRenderTarget->Release();
-	}
-	if (this->m_pDestSurface)
-	{
-		printf(" > Cleaning up Surface \n");
-		this->m_pDestSurface->Release();
 	}
 	if (this->m_pDirect2dFactory)
 	{
