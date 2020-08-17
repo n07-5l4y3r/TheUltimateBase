@@ -2,6 +2,6 @@
 # Diese .gitignore-Datei wurde von Microsoft(R) Visual Studio automatisch erstellt.
 ################################################################################
 
-/.vs/GlobalDraw/v16
-/GlobalDraw/tmp/Debug
-/out/Debug/x64
+/.vs
+/tmp
+/out
