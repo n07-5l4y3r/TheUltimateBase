@@ -1,2 +1,4 @@
-*/IPC/master.h linguist-language=C
-*/IPC/master.c linguist-language=C
+*.h linguist-language=C
+*.c linguist-language=C
+*.hpp linguist-language=C++
+*.cpp linguist-language=C++
