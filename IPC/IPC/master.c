@@ -13,12 +13,10 @@ unsigned __int32 handle_packet(unsigned __int32 ui32PID, psPacket pPacket, unsig
 	}
 	// handle cmd
 	unsigned __int64 ui64pReply = 0ui64, ui64SizeReply = 0ui64;
+	if (uResult = HandleCmd(ui32PID, pPacket->ui64Size, pPacket->ui64pData, (unsigned __int64)&ui64SizeReply, (unsigned __int64)&ui64pReply))
 	{
-
+		return uResult;
 	}
-	// rebase data
-	pPacket->ui64pData = ui64pReply;
-	pPacket->ui64Size = ui64SizeReply;
 	// writeback reply
 	if (uResult = write_memory_impl(ui32PID, ui64pPacket, pPacket, sizeof(sPacket)))
 	{
@@ -31,6 +29,11 @@ unsigned __int32 handle_packet(unsigned __int32 ui32PID, psPacket pPacket, unsig
 	}
 	// return last error (hopefully none)
 	return uResult;
+}
+
+unsigned __int32 handle_packet(unsigned __int32 ui32PID, psPacket pPacket, unsigned __int64 ui64pPacket, unsigned __int32(*fHandleCmd)(unsigned __int64& ui64Size, unsigned __int64& ui64pData), unsigned __int64 ui64fPromiseCB)
+{
+	return 0;
 }
 
 unsigned __int32 querry(unsigned __int32 ui32PID, unsigned __int64 ui64fQuerryCB, unsigned __int64 ui64fPromiseCB)
