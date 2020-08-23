@@ -73,25 +73,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
-    <IntDir>$(ProjectDir)tmp\$(Configuration)\$(PlatformShortName)\</IntDir>
+    <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
     <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
-    <IntDir>$(ProjectDir)tmp\$(Configuration)\$(PlatformShortName)\</IntDir>
+    <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
     <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
-    <IntDir>$(ProjectDir)tmp\$(Configuration)\$(PlatformShortName)\</IntDir>
+    <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
     <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
-    <IntDir>$(ProjectDir)tmp\$(Configuration)\$(PlatformShortName)\</IntDir>
+    <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
     <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -163,16 +163,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\IPC\IPC\master.c" />
-    <ClCompile Include="..\IPC\IPC\slave.cpp" />
     <ClCompile Include="DD_Overlay\DD_Overlay.cpp" />
     <ClCompile Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.cpp" />
     <ClCompile Include="GlobalDraw.cpp" />
     <ClCompile Include="ID2D1_Renderer\ID2D1_Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\IPC\IPC\master.h" />
-    <ClInclude Include="..\IPC\IPC\slave.hpp" />
     <ClInclude Include="DD_Overlay\DD_Overlay.hpp" />
     <ClInclude Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.hpp" />
     <ClInclude Include="ID2D1_Renderer\ID2D1_Renderer.hpp" />
