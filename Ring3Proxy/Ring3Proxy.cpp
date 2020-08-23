@@ -1,8 +1,6 @@
-#include "inc.hpp"
-
-#include <future>
-
+#include <iostream>
 #include <Windows.h>
+#include <tlhelp32.h>
 
 struct sCmd {
 	enum eCmdId : uint64_t
@@ -13,53 +11,6 @@ struct sCmd {
 	uint64_t	ui64pParam;
 	uint32_t    ui32Reply;
 };
-
-ts_map<uint64_t> cmds_active;
-ts_queue<sCmd> cmds_pending;
-
-extern "C" __declspec(dllexport) uint32_t __cdecl getCmdCB(uint64_t ui64pCmd)
-{
-	printf("   " "   " " > " __FUNCTION__ "\n");
-	if (cmds_pending.is_empty())
-		return 0ui32;
-	*(sCmd*)ui64pCmd = cmds_pending.pop();
-	return 0ui32;
-}
-extern "C" __declspec(dllexport) uint32_t __cdecl setPromiseCB(uint64_t ui64pCmd)
-{
-	printf("   " "   " " > " __FUNCTION__ "\n");
-	auto pCmd = (sCmd*)ui64pCmd;
-	if (!cmds_active.get(pCmd->ui64pParam).has_value())
-		return 0ui32;
-	cmds_active.get(pCmd->ui64pParam).value().get().set_value(pCmd->ui32Reply);
-	return 0ui32;
-}
-
-std::future<uint32_t> queue_cmd(const sCmd Cmd)
-{
-	printf("   " " > " __FUNCTION__ "\n");
-	cmds_pending.push(Cmd);
-	cmds_active.add(Cmd.ui64pParam);
-	return cmds_active.get(Cmd.ui64pParam).value().get().get_future();
-}
-
-int slave()
-{
-	printf(" > " __FUNCTION__ "\n");
-	while (true)
-	{
-		auto f1 = queue_cmd(sCmd({ sCmd::eCmdId::echo,6ui64,(uint64_t)"hello",0ui64 }));
-		auto f2 = queue_cmd(sCmd({ sCmd::eCmdId::echo,6ui64,(uint64_t)"world",0ui64 }));
-		auto f3 = queue_cmd(sCmd({ sCmd::eCmdId::echo,5ui64,(uint64_t)"test",0ui64 }));
-		auto f4 = queue_cmd(sCmd({ sCmd::eCmdId::echo,4ui64,(uint64_t)"123",0ui64 }));
-		printf(" > " "f1:%u", f1.get());
-		printf(" > " "f2:%u", f2.get());
-		printf(" > " "f3:%u", f3.get());
-		printf(" > " "f4:%u", f4.get());
-		system("pause");
-	}
-	return 0;
-}
 
 int master(uint32_t ui32PID)
 {
@@ -87,7 +38,7 @@ int master(uint32_t ui32PID)
 		printf("   "" > ""get cmd""\n");
 		uint32_t uRetval = 0ui32;
 		{
-			auto farGetCmdCB = GetProcAddress(GetModuleHandle(NULL), "getCmdCB");
+			auto farGetCmdCB = GetProcAddress(LoadLibraryA("Client.exe"), "getCmdCB");
 			auto hThread = CreateRemoteThread(hProcess, 0, 0, (LPTHREAD_START_ROUTINE)farGetCmdCB, (LPVOID)ui64pCmd, 0, 0);
 			uRetval = WaitForSingleObject(hThread, INFINITE);
 			if (uRetval)
@@ -104,7 +55,7 @@ int master(uint32_t ui32PID)
 		}
 		printf("   "" > ""read param""\n");
 		LPVOID pBuf = nullptr;
-		if (oCmd.eCmdId == sCmd::echo && oCmd.ui64pParam && oCmd.ui64Size)
+		if (oCmd.ui64pParam && oCmd.ui64Size)
 		{
 			if (!ReadProcessMemory(hProcess, (LPCVOID)oCmd.ui64pParam, pBuf = malloc(oCmd.ui64Size), oCmd.ui64Size, 0))
 				return 4;
@@ -122,7 +73,7 @@ int master(uint32_t ui32PID)
 		}
 		printf("   "" > ""set promise""\n");
 		{
-			auto farPromiseCB = GetProcAddress(GetModuleHandle(NULL), "setPromiseCB");
+			auto farPromiseCB = GetProcAddress(LoadLibraryA("Client.exe"), "setPromiseCB");
 			auto hThread = CreateRemoteThread(hProcess, 0, 0, (LPTHREAD_START_ROUTINE)farPromiseCB, (LPVOID)ui64pCmd, 0, 0);
 			uRetval = WaitForSingleObject(hThread, INFINITE);
 			if (uRetval)
@@ -143,13 +94,43 @@ int master(uint32_t ui32PID)
 	return 0;
 }
 
+uint32_t GetProcessByName(std::wstring name)
+{
+	DWORD pid = 0;
+
+	// Create toolhelp snapshot.
+	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	PROCESSENTRY32 process;
+	ZeroMemory(&process, sizeof(process));
+	process.dwSize = sizeof(process);
+
+	// Walkthrough all processes.
+	if (Process32First(snapshot, &process))
+	{
+		do
+		{
+			std::wcout << L" > " << process.szExeFile << std::endl;
+			if (lstrcmpW(process.szExeFile, name.c_str()) == 0)
+			{
+				pid = process.th32ProcessID;
+				break;
+			}
+		} while (Process32Next(snapshot, &process));
+	}
+
+	CloseHandle(snapshot);
+
+	return pid;
+}
+
 int main(int argc, char* argv[])
 {
-	printf(" > " __FUNCTION__ "\n");
-	printf(" > ""PID: %u""\n", GetCurrentProcessId());
-	if (argc > 1)
-		return master(atoi(argv[1]));
-	else
-		return slave();
-	return 0;
+	auto pid = GetProcessByName(std::wstring(L"Client.exe"));
+	if (!pid)
+	{
+		std::cout << "not found!" << std::endl;
+		return 1;
+	}
+
+	return master(pid);
 }

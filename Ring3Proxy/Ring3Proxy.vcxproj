@@ -18,21 +18,12 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="inc.hpp" />
-    <ClInclude Include="ts_map\ts_map.hpp" />
-    <ClInclude Include="ts_queue\ts_queue.hpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{23e8b901-7d15-4087-be36-09f75bee47ab}</ProjectGuid>
-    <RootNamespace>IPC2</RootNamespace>
+    <ProjectGuid>{00b487f6-8178-4b5c-b12b-01e54f40a367}</ProjectGuid>
+    <RootNamespace>Ring3Proxy</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>IPC2</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -81,25 +72,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <ExecutablePath>$(SolutionDir)out\$(Configuration)\$(PlatformShortName);$(ExecutablePath)</ExecutablePath>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <ExecutablePath>$(SolutionDir)out\$(Configuration)\$(PlatformShortName);$(ExecutablePath)</ExecutablePath>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <ExecutablePath>$(SolutionDir)out\$(Configuration)\$(PlatformShortName);$(ExecutablePath)</ExecutablePath>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <ExecutablePath>$(SolutionDir)out\$(Configuration)\$(PlatformShortName);$(ExecutablePath)</ExecutablePath>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
   </PropertyGroup>
@@ -163,6 +150,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Ring3Proxy.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

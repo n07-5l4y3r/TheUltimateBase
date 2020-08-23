@@ -267,7 +267,7 @@ int main()
 
 					// 1000000 microseconds = 1 second
 					auto fps = duration ? 1000000ull / duration : 9999999ull;
-					printf("FPS: %llu | %llu\n", fps, duration);
+					//printf("FPS: %llu | %llu\n", fps, duration);
 
 					return pRenderTarget->EndDraw();
 				}

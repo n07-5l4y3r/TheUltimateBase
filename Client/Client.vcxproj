@@ -167,12 +167,16 @@
     <ClCompile Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.cpp" />
     <ClCompile Include="GlobalDraw.cpp" />
     <ClCompile Include="ID2D1_Renderer\ID2D1_Renderer.cpp" />
+    <ClCompile Include="IPC\IPC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DD_Overlay\DD_Overlay.hpp" />
     <ClInclude Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.hpp" />
     <ClInclude Include="ID2D1_Renderer\ID2D1_Renderer.hpp" />
     <ClInclude Include="inc.hpp" />
+    <ClInclude Include="IPC\IPC.hpp" />
+    <ClInclude Include="IPC\ts_map\ts_map.hpp" />
+    <ClInclude Include="IPC\ts_queue\ts_queue.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -27,6 +27,9 @@
     <ClCompile Include="ID2D1_Renderer\ID2D1_Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IPC\IPC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc.hpp">
@@ -39,6 +42,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ts_queue\ts_queue.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ts_map\ts_map.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPC\ts_map\ts_map.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPC\ts_queue\ts_queue.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPC\IPC.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
