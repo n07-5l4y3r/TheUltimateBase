@@ -2,24 +2,16 @@
 
 #include <inc.hpp>
 
-union RGBA {
-	struct {
-		BYTE r;
-		BYTE g;
-		BYTE b;
-		BYTE a;
-	} sRGBA;
-	DWORD dwRGBA;
-};
-
 class ID2D1_Renderer {
 	unsigned uWidth, uHeight;
 	IDXGISurface* pDestSurface;
 	//
+public:
 	ID2D1Factory* m_pDirect2dFactory = nullptr;
 	ID2D1RenderTarget* m_pRenderTarget = nullptr;
 	IDWriteFactory* dwrite_factory = nullptr;
 	//
+private:
 	std::map< DWORD, ID2D1SolidColorBrush* > m_mSolidBrushes;
 private:
 	HRESULT CreateFactory();

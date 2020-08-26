@@ -211,6 +211,7 @@ int main()
 	GLOBALS::pDD_Overlay = new DD_Overlay(uWidth, uHeight);
 	GLOBALS::pDX11_BackgroundRenderer = new DX11_BackgroundRenderer(uWidth, uHeight, hWnd);
 	GLOBALS::pID2D1_Renderer = new ID2D1_Renderer(uWidth, uHeight, GLOBALS::pDX11_BackgroundRenderer->QuerypDXGISurface());
+	render_utils::render = new render_utils::c_render();
 
 	printf("\n > Hide Render Preview Window\n");
 	ShowWindow(hWnd, SW_HIDE);
@@ -264,8 +265,14 @@ int main()
 
 					//auto rect = D2D1::RectF(0, 0, 100, 100);
 					//pRenderTarget->FillRectangle(rect, pInst->GetBrush(RGBA({ 0,255,0,255 / 2 })));
-					//auto fps = duration ? 1000000ull / duration : 9999999ull;
+					auto fps = duration ? 1000000ull / duration : 9999999ull;
 
+					if (render_utils::render->was_setup == false) render_utils::render->setup(pInst->m_pDirect2dFactory, pRenderTarget, pInst->dwrite_factory);
+					else
+					{
+						render_utils::render->text("global-draw-overlay~", 0.6f, 0.6f, RGBA({ 0, 255, 0, 255 }), "Consolas0.8");
+						render_utils::render->text(std::string("overlay fps:").append(std::to_string((int)fps)), 0.6f, 2.4f, RGBA({ 255, 0, 0, 255 }), "Consolas0.8");
+					}
 					return pRenderTarget->EndDraw();
 				}
 			);

@@ -3,6 +3,11 @@
 #include <iostream>
 #include <map>
 #include <chrono>
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <iomanip>
+#include <sstream>
 
 #pragma comment(lib, "ddraw.lib")
 #pragma comment(lib, "dxguid.lib")
