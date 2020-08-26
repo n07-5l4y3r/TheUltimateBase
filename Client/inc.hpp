@@ -15,6 +15,9 @@
 #include <d2d1.h>
 #pragma comment(lib, "d2d1.lib")
 
+#include <dwrite.h>
+#pragma comment(lib, "dwrite.lib")
+
 //#pragma comment(lib, "gdiplus.lib")
 //#include <gdiplus.h>
 //using namespace Gdiplus;
@@ -25,5 +28,6 @@
 //d3d
 #include "DX11_BackgroundRenderer/DX11_BackgroundRenderer.hpp"
 
+#include "ID2D1_Renderer/render.h"
 //d2d
 #include "ID2D1_Renderer/ID2D1_Renderer.hpp"

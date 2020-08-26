@@ -199,7 +199,7 @@ namespace GLOBALS
 
 int main()
 {
-	unsigned uZoom = 60;
+	unsigned uZoom = 120;
 	unsigned uWidth = 16 * uZoom;
 	unsigned uHeight = 9 * uZoom;
 
@@ -262,9 +262,8 @@ int main()
 
 					pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black, 0.F)); //Transparent
 
-					//auto rect = D2D1::RectF(50, 50, 100, 100);
+					//auto rect = D2D1::RectF(0, 0, 100, 100);
 					//pRenderTarget->FillRectangle(rect, pInst->GetBrush(RGBA({ 0,255,0,255 / 2 })));
-
 					//auto fps = duration ? 1000000ull / duration : 9999999ull;
 
 					return pRenderTarget->EndDraw();

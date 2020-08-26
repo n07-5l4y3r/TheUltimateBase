@@ -11,6 +11,8 @@ HRESULT ID2D1_Renderer::CreateFactory()
 			printf("    [-] hResult = %#x\n", hResult);
 			return hResult;
 		}
+		hResult = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(this->dwrite_factory), reinterpret_cast<IUnknown**>(&this->dwrite_factory));
+		if (hResult != S_OK) { printf("error in dwrite factory:%i\n", hResult); return S_FALSE; }
 		printf("    [+] m_pDirect2dFactory = %#p\r\n", this->m_pDirect2dFactory);
 	}
 	return S_OK;

@@ -1,0 +1,5 @@
+﻿  DD_Overlay.cpp
+  DX11_BackgroundRenderer.cpp
+  GlobalDraw.cpp
+  ID2D1_Renderer.cpp
+  Client.vcxproj -> C:\Users\Hash\source\repos\GlobalDraw2\out\Debug\x64\Client.exe
