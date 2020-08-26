@@ -16,7 +16,7 @@ bool render_utils::c_render::mfont(std::string font, float size)
 	IDWriteTextFormat* f = nullptr;
 	auto r = this->dwrite_factory->CreateTextFormat(std::wstring(font.begin(), font.end()).c_str(), NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, size, L"", &f);
 	if ((bool)(r != S_OK)) { printf("failed making font %s %f\n", font.c_str(), size); return false; }
-	auto s_f = new render_utils::s_font(); s_f->init(font, size, f); this->fonts[s_f->iname] = s_f;
+	auto s_f = new render_utils::s_font(); s_f->init(font, size, f); this->fonts[s_f->iname] = s_f; 
 	return true;
 }
 render_utils::s_font* render_utils::c_render::gfont(std::string iname)

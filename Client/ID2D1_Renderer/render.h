@@ -32,7 +32,7 @@ namespace render_utils
 	class c_render
 	{
 	private:
-		ID2D1Factory	 * d2d_factory = nullptr;
+		ID2D1Factory	 * d2d_factory = nullptr; 
 		ID2D1RenderTarget* d2d_render_target = nullptr;
 		IDWriteFactory	 * dwrite_factory = nullptr;
 		std::unordered_map<std::string, s_font        *> fonts   = std::unordered_map<std::string, s_font*>();

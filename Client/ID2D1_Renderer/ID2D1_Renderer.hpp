@@ -10,7 +10,7 @@ public:
 	ID2D1Factory* m_pDirect2dFactory = nullptr;
 	ID2D1RenderTarget* m_pRenderTarget = nullptr;
 	IDWriteFactory* dwrite_factory = nullptr;
-	//
+	// 
 private:
 	std::map< DWORD, ID2D1SolidColorBrush* > m_mSolidBrushes;
 private:

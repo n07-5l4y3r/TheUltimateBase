@@ -262,7 +262,7 @@ int main()
 					pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 					pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black, 0.F)); //Transparent
-
+					 
 					//auto rect = D2D1::RectF(0, 0, 100, 100);
 					//pRenderTarget->FillRectangle(rect, pInst->GetBrush(RGBA({ 0,255,0,255 / 2 })));
 					auto fps = duration ? 1000000ull / duration : 9999999ull;

@@ -14,7 +14,7 @@
 #include <ddraw.h>
 
 #include <d3d11.h>
-#include <dcommon.h>
+#include <dcommon.h> 
 #pragma comment(lib, "d3d11.lib")
 
 #include <d2d1.h>
