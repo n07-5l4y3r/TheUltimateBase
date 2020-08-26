@@ -272,6 +272,17 @@ int main()
 					{
 						render_utils::render->text("global-draw-overlay~", 0.6f, 0.6f, RGBA({ 0, 255, 0, 255 }), "Consolas0.8");
 						render_utils::render->text(std::string("overlay fps:").append(std::to_string((int)fps)), 0.6f, 2.4f, RGBA({ 255, 0, 0, 255 }), "Consolas0.8");
+						//
+						render_utils::render->line(0.6f, 4.f, 8.f, 4.f, 0.15f, RGBA({0, 255, 0, 255}));
+						//
+						render_utils::render->orect(0.6f, 5.f, 5.f, 5.f, 0.15f, RGBA({ 255,0,0,255 }));
+						//
+						render_utils::render->frect(6.6f, 5.f, 5.f, 5.f, RGBA({ 0,255,0,255 }));
+						//
+						render_utils::render->orrect(0.6f, 11.f, 5.f, 5.f, 5.f, 0.15f, RGBA({ 255,0,0,255 }));
+						//
+						render_utils::render->frrect(6.6f, 11.f, 5.f, 5.f, 5.f, RGBA({ 0,255,0,255 }));
+
 					}
 					return pRenderTarget->EndDraw();
 				}

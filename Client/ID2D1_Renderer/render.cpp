@@ -43,8 +43,40 @@ void render_utils::c_render::text(std::string t, float x, float y, RGBA clr, std
 {
 	auto fnt = this->gfont(f); if (fnt == nullptr) return;
 	auto brs = this->gbrush(clr); if (brs == nullptr) return;
-	auto rec = D2D1::RectF(x, y, 1920, 1080);//TODO:	make global w/h<<<
+	auto rec = D2D1::RectF(x, y, this->w, this->h);//TODO:	make global w/h<<<
 	this->d2d_render_target->DrawTextW(std::wstring(t.begin(), t.end()).c_str(), (int)t.size(), fnt->tformat, rec, brs);
 }
-
+void render_utils::c_render::line(float x, float y, float x2, float y2, float w, RGBA clr)
+{
+	auto brs = this->gbrush(clr); if (brs == nullptr) return;
+	auto r1 = D2D_POINT_2F(); r1.x = x; r1.y = y;
+	auto r2 = D2D_POINT_2F(); r2.x = x2; r2.y = y2;
+	this->d2d_render_target->DrawLine(r1, r2, brs, w);
+}
+void render_utils::c_render::orect(float x, float y, float x2, float y2, float w, RGBA clr)
+{
+	auto brs = this->gbrush(clr); if (brs == nullptr) return;
+	auto r1 = D2D1::RectF(x, y, x2+x, y2+y);
+	this->d2d_render_target->DrawRectangle(r1, brs, w);
+}
+void render_utils::c_render::frect(float x, float y, float x2, float y2, RGBA clr)
+{
+	auto brs = this->gbrush(clr); if (brs == nullptr) return;
+	auto r1 = D2D1::RectF(x, y, x2+x, y2+y);
+	this->d2d_render_target->FillRectangle(r1, brs);
+}
+void render_utils::c_render::orrect(float x, float y, float x2, float y2, float r, float w, RGBA clr)
+{
+	auto brs = this->gbrush(clr); if (brs == nullptr) return;
+	auto r1 = D2D1_ROUNDED_RECT(); r1.radiusX = r; r1.radiusY = r;
+	r1.rect = D2D1::RectF(x,y,x2+x,y2+y);
+	this->d2d_render_target->DrawRoundedRectangle(r1, brs, w);
+}
+void render_utils::c_render::frrect(float x, float y, float x2, float y2, float r, RGBA clr)
+{
+	auto brs = this->gbrush(clr); if (brs == nullptr) return;
+	auto r1 = D2D1_ROUNDED_RECT(); r1.radiusX = r; r1.radiusY = r;
+	r1.rect = D2D1::RectF(x, y, x2+x, y2+y);
+	this->d2d_render_target->FillRoundedRectangle(r1, brs);
+}
 render_utils::c_render* render_utils::render;

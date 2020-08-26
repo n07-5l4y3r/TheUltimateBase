@@ -37,6 +37,7 @@ namespace render_utils
 		IDWriteFactory	 * dwrite_factory = nullptr;
 		std::unordered_map<std::string, s_font        *> fonts   = std::unordered_map<std::string, s_font*>();
 		std::unordered_map<DWORD, ID2D1SolidColorBrush*> brushes = std::unordered_map<DWORD, ID2D1SolidColorBrush*>();
+		float w = 1920; float h = 1080;
 	public:
 		bool					was_setup = false;
 		bool					setup(ID2D1Factory* rinst, ID2D1RenderTarget* rtinst, IDWriteFactory* iwinst);
@@ -46,6 +47,11 @@ namespace render_utils
 		ID2D1SolidColorBrush*	gbrush(RGBA clr);
 		//draw fns
 		void					text(std::string t, float x, float y, RGBA clr, std::string f);
+		void					line(float x, float y, float x2, float y2, float w, RGBA clr);
+		void					orect(float x, float y, float x2, float y2, float w, RGBA clr);
+		void					frect(float x, float y, float x2, float y2, RGBA clr);
+		void					orrect(float x, float y, float x2, float y2, float r, float w, RGBA clr);
+		void					frrect(float x, float y, float x2, float y2, float r, RGBA clr);
 	};	
 	extern c_render* render;
 }
