@@ -28,7 +28,7 @@ bool render_utils::c_render::mbrush(RGBA clr)
 {
 	if (this->brushes.find(clr.dwRGBA) != this->brushes.end()) { printf("brush already exists\n"); return false; }
 	ID2D1SolidColorBrush* b = nullptr;
-	auto r = this->d2d_render_target->CreateSolidColorBrush({ (FLOAT)clr.sRGBA.r,(FLOAT)clr.sRGBA.g,(FLOAT)clr.sRGBA.b,1.f / 255.f * (FLOAT)clr.sRGBA.a }, &b);
+	auto r = this->d2d_render_target->CreateSolidColorBrush({ (FLOAT)clr.sRGBA.r / 255.f,(FLOAT)clr.sRGBA.g / 255.f,(FLOAT)clr.sRGBA.b / 255.f, (FLOAT)clr.sRGBA.a / 255.f }, &b);
 	if (r != S_OK) { printf("failed making brush\n"); return false; }
 	this->brushes[clr.dwRGBA] = b;
 	return true;

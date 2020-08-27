@@ -8,16 +8,19 @@ namespace ui
 		bool was_setup = false;
 		bool setup();
 		//
-		bool  is_active = false;
-		float menu_x = 5.f; float menu_y = 5.f;
+		bool  is_active = false; bool moving = false;
+		float menu_x = 50.f; float menu_y = 250.f;
 		float cursor_x = 0.f; float cursor_y = 0.f;
 		float dpi_x = 0.f; float dpi_y = 0.f;
 		//
 		void gcursor();
 		void input();
+		bool isbound(float v, float m, float h);
 		//
 		void bg();
 		void render();
+		//
+		void move();
 	public:
 		float gdpix(); float gdpiy();
 		void work();
