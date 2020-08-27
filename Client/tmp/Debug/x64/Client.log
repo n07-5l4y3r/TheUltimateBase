@@ -3,4 +3,6 @@
   GlobalDraw.cpp
   ID2D1_Renderer.cpp
   render.cpp
+  ui.cpp
+  input.cpp
   Client.vcxproj -> C:\Users\Hash\source\repos\GlobalDraw2\out\Debug\x64\Client.exe

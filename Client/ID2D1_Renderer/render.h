@@ -45,6 +45,8 @@ namespace render_utils
 		s_font*					gfont(std::string iname);
 		bool					mbrush(RGBA clr);
 		ID2D1SolidColorBrush*	gbrush(RGBA clr);
+		ID2D1Factory*			gd2dfac();
+		ID2D1RenderTarget*		gd2drfac();
 		//draw fns
 		void					text(std::string t, float x, float y, RGBA clr, std::string f);
 		void					line(float x, float y, float x2, float y2, float w, RGBA clr);

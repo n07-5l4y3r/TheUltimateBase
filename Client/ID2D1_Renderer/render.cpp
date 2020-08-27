@@ -39,6 +39,14 @@ ID2D1SolidColorBrush* render_utils::c_render::gbrush(RGBA clr)
 	if (this->mbrush(clr)) return this->brushes[clr.dwRGBA];
 	return nullptr;
 }
+ID2D1Factory* render_utils::c_render::gd2dfac()
+{
+	return this->d2d_factory;
+}
+ID2D1RenderTarget* render_utils::c_render::gd2drfac()
+{
+	return this->d2d_render_target;
+}
 void render_utils::c_render::text(std::string t, float x, float y, RGBA clr, std::string f)
 {
 	auto fnt = this->gfont(f); if (fnt == nullptr) return;

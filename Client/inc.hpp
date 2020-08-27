@@ -34,5 +34,8 @@
 #include "DX11_BackgroundRenderer/DX11_BackgroundRenderer.hpp"
 
 #include "ID2D1_Renderer/render.h"
+#include "input/input.h"
+#include "ID2D1_Renderer/ui.h"
+
 //d2d
 #include "ID2D1_Renderer/ID2D1_Renderer.hpp"

@@ -30,6 +30,12 @@
     <ClCompile Include="ID2D1_Renderer\render.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="input\input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ID2D1_Renderer\ui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc.hpp">
@@ -45,6 +51,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ID2D1_Renderer\render.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="input\input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ID2D1_Renderer\ui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
