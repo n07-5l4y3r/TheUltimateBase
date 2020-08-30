@@ -199,7 +199,7 @@ namespace GLOBALS
 
 int main()
 {
-	unsigned uZoom = 60;
+	unsigned uZoom = 120;
 	unsigned uWidth = 16 * uZoom;
 	unsigned uHeight = 9 * uZoom;
 
@@ -211,6 +211,9 @@ int main()
 	GLOBALS::pDD_Overlay = new DD_Overlay(uWidth, uHeight);
 	GLOBALS::pDX11_BackgroundRenderer = new DX11_BackgroundRenderer(uWidth, uHeight, hWnd);
 	GLOBALS::pID2D1_Renderer = new ID2D1_Renderer(uWidth, uHeight, GLOBALS::pDX11_BackgroundRenderer->QuerypDXGISurface());
+	render_utils::render = new render_utils::c_render();
+	input::input = new input::c_input();
+	ui::ui = new ui::c_ui();
 
 	printf("\n > Hide Render Preview Window\n");
 	ShowWindow(hWnd, SW_HIDE);
@@ -261,14 +264,25 @@ int main()
 					pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 					pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black, 0.F)); //Transparent
-
-					auto rect = D2D1::RectF(50, 50, 100, 100);
-					pRenderTarget->FillRectangle(rect, pInst->GetBrush(RGBA({ 0,255,0,255 / 2 })));
-
-					// 1000000 microseconds = 1 second
 					auto fps = duration ? 1000000ull / duration : 9999999ull;
-					printf("FPS: %llu | %llu\n", fps, duration);
 
+					if (render_utils::render->was_setup == false) render_utils::render->setup(pInst->m_pDirect2dFactory, pRenderTarget, pInst->dwrite_factory);
+					else
+					{
+						render_utils::render->text("global-draw-overlay~", 0.6f, 0.6f, RGBA({ 0, 255, 0, 255 }), "Consolas0.8");
+						render_utils::render->text(std::string("overlay fps:").append(std::to_string((int)fps)), 0.6f, 2.4f, RGBA({ 255, 0, 0, 255 }), "Consolas0.8");
+						//
+						//render_utils::render->line(0.6f, 4.f, 8.f, 4.f, 0.15f, RGBA({0, 255, 0, 255}));
+						////
+						//render_utils::render->orect(0.6f, 5.f, 5.f, 5.f, 0.15f, RGBA({ 255,0,0,255 }));
+						////
+						//render_utils::render->frect(6.6f, 5.f, 5.f, 5.f, RGBA({ 0,255,0,255 }));
+						////
+						//render_utils::render->orrect(0.6f, 11.f, 5.f, 5.f, 5.f, 0.15f, RGBA({ 255,0,0,255 }));
+						////
+						//render_utils::render->frrect(6.6f, 11.f, 5.f, 5.f, 5.f, RGBA({ 0,255,0,255 }));
+						ui::ui->work();
+					}
 					return pRenderTarget->EndDraw();
 				}
 			);

@@ -118,6 +118,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,12 +168,18 @@
     <ClCompile Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.cpp" />
     <ClCompile Include="GlobalDraw.cpp" />
     <ClCompile Include="ID2D1_Renderer\ID2D1_Renderer.cpp" />
+    <ClCompile Include="ID2D1_Renderer\render.cpp" />
+    <ClCompile Include="ID2D1_Renderer\ui.cpp" />
+    <ClCompile Include="input\input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DD_Overlay\DD_Overlay.hpp" />
     <ClInclude Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.hpp" />
     <ClInclude Include="ID2D1_Renderer\ID2D1_Renderer.hpp" />
+    <ClInclude Include="ID2D1_Renderer\render.h" />
+    <ClInclude Include="ID2D1_Renderer\ui.h" />
     <ClInclude Include="inc.hpp" />
+    <ClInclude Include="input\input.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
