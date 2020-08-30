@@ -201,7 +201,7 @@ int main()
 {
 	unsigned uZoom = 120;
 
-	while (true)
+	/*while (true)
 	{
 		printf("------------------------------------------------------" "\n");
 		{
@@ -220,7 +220,7 @@ int main()
 			freeCmd(pParam);
 		}
 		system("pause");
-	}
+	}*/
 
 	unsigned uWidth = 16 * uZoom;
 	unsigned uHeight = 9 * uZoom;
