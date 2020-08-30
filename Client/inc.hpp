@@ -29,4 +29,4 @@
 #include "ID2D1_Renderer/ID2D1_Renderer.hpp"
 
 //ipc
-#include "IPC/IPC.hpp"
+#include "IPC/ipc_slave.hpp"

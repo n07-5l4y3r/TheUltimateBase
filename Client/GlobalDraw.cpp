@@ -199,6 +199,29 @@ namespace GLOBALS
 
 int main()
 {
+	sCmd oCmd = { };
+	oCmd.eCmdId = sCmd::echo;
+	oCmd.ui64Size = 5ui64;
+	oCmd.ui64pParam = (unsigned __int64)"test";
+	oCmd.ui32Reply = 0ui32;
+
+	auto oFuture = queue_cmd(oCmd);
+	auto v = oFuture.get();
+	std::cout << " > " << "ui32Reply: " << v.ui32Reply << std::endl;
+	std::cout << " > " << "pParam:  " << (char*)v.ui64pParam << std::endl;
+
+	oCmd.eCmdId = sCmd::ping;
+	oCmd.ui64Size = 5ui64;
+	oCmd.ui64pParam = (unsigned __int64)"ping";
+	oCmd.ui32Reply = 0ui32;
+
+	oFuture = queue_cmd(oCmd);
+	v = oFuture.get();
+	std::cout << " > " << "ui32Reply: " << v.ui32Reply << std::endl;
+	std::cout << " > " << "pParam:  " << (char*)v.ui64pParam << std::endl;
+
+	system("pause");
+
 	unsigned uZoom = 60;
 	unsigned uWidth = 16 * uZoom;
 	unsigned uHeight = 9 * uZoom;

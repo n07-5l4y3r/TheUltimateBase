@@ -5,10 +5,9 @@
 #include <functional>
 #include <optional>
 #include <stdexcept>
-#include <future>
 #include <cinttypes>
 
-template < class K, class V = std::promise<uint32_t>, class Compare = std::less<K>, class Allocator = std::allocator<std::pair<const K, V> > >
+template < class K, class V, class Compare = std::less<K>, class Allocator = std::allocator<std::pair<const K, V> > >
 class ts_map {
 	std::map<K, V, Compare, Allocator> _map;
 	std::mutex _m;
