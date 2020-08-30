@@ -1,11 +1,11 @@
 #pragma once
 
+#include <future>
+
 #include "ipc.h"
 
 #include "IPC/ts_map/ts_map.hpp"
 #include "IPC/ts_queue/ts_queue.hpp"
-
-#include <future>
 
 // --
 

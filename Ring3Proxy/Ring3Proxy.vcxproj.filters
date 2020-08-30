@@ -21,7 +21,7 @@
     <ClInclude Include="..\Client\IPC\ipc.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="..\Client\IPC\ipc_master.h">
+    <ClInclude Include="..\Client\IPC\ipc_master.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -29,7 +29,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\Client\IPC\ipc_master.c">
+    <ClCompile Include="..\Client\IPC\ipc_master.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

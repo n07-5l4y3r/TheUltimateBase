@@ -20,15 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Client\IPC\ipc.h" />
-    <ClInclude Include="..\Client\IPC\ipc_master.h" />
+    <ClInclude Include="..\Client\IPC\ipc_master.hpp" />
     <ClInclude Include="inc.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Client\IPC\ipc_master.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsC</CompileAs>
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsC</CompileAs>
+    <ClCompile Include="..\Client\IPC\ipc_master.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Default</CompileAs>
     </ClCompile>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
