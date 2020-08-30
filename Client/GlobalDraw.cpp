@@ -199,26 +199,26 @@ namespace GLOBALS
 
 int main()
 {
+	while (true)
 	{
 		printf("------------------------------------------------------" "\n");
-		auto pParam = queueCmd(eCmdID::ECHO, (unsigned char*)"test", 5);
-		auto oParam = getFuture(pParam).get();
-		std::cout << " > " << "RPLpBuf: " << (char*)oParam.ui64RPLpBuf << std::endl;
-		std::cout << " > " << "RPLsize:  " << oParam.ui64RPLsize << std::endl;
-		freeCmd(pParam);
-	}
-
-	{
+		{
+			auto pParam = queueCmd(eCmdID::ECHO, (unsigned char*)"test", 5);
+			auto oParam = getFuture(pParam).get();
+			std::cout << " > " << "RPLpBuf: " << (char*)oParam.ui64RPLpBuf << std::endl;
+			std::cout << " > " << "RPLsize:  " << oParam.ui64RPLsize << std::endl;
+			freeCmd(pParam);
+		}
 		printf("------------------------------------------------------" "\n");
-		auto pParam = queueCmd(eCmdID::PING, (unsigned char*)"ping", 5);
-		auto oParam = getFuture(pParam).get();
-		std::cout << " > " << "RPLpBuf: " << (char*)oParam.ui64RPLpBuf << std::endl;
-		std::cout << " > " << "RPLsize:  " << oParam.ui64RPLsize << std::endl;
-		freeCmd(pParam);
+		{
+			auto pParam = queueCmd(eCmdID::PING, (unsigned char*)"ping", 5);
+			auto oParam = getFuture(pParam).get();
+			std::cout << " > " << "RPLpBuf: " << (char*)oParam.ui64RPLpBuf << std::endl;
+			std::cout << " > " << "RPLsize:  " << oParam.ui64RPLsize << std::endl;
+			freeCmd(pParam);
+		}
+		system("pause");
 	}
-
-	printf("------------------------------------------------------" "\n");
-	system("pause");
 
 	unsigned uZoom = 60;
 	unsigned uWidth = 16 * uZoom;

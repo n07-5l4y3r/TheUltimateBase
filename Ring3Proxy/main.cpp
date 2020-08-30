@@ -103,6 +103,29 @@ int main(int argc, char* argv[])
 		free((void*)ui64pDest);
 	};
 	printf(" + " "fmemfreeImpl: %#p" "\n", fmemfreeImpl);
+	finterpret_command = [](
+		unsigned __int64  CMDid,
+		unsigned __int64  CMDpBuf,
+		unsigned __int64  CMDsize,
+		unsigned __int64& RPLpBuf,
+		unsigned __int64& RPLsize
+		) 
+	{
+		printf(" > " "finterpret_command" "\n");
+		if (CMDid == (eCmdID)ECHO)
+		{
+			RPLsize = CMDsize;
+			RPLpBuf = fmallocImpl(RPLsize);
+			fmemcpyImpl(RPLpBuf, CMDpBuf, RPLsize);
+		}
+		else if (CMDid == (eCmdID)PING)
+		{
+			RPLsize = 5;
+			RPLpBuf = fmallocImpl(RPLsize);
+			fmemcpyImpl(RPLpBuf, (unsigned __int64)"pong", RPLsize);
+		}
+	};
+	printf(" + " "finterpret_command: %#p" "\n", finterpret_command);
 
 	unsigned __int64 ui64fgetCmdCB = (unsigned __int64)GetProcAddress(LoadLibraryA("Client.exe"), "getCmdCB");
 	printf(" + " "ui64fgetCmdCB: %#p" "\n", ui64fgetCmdCB);

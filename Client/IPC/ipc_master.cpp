@@ -14,6 +14,13 @@ unsigned __int64 (*fmallocImpl)(unsigned __int64 ui64size) = 0;
 void (*fmemcpyImpl)(unsigned __int64 ui64pDest, unsigned __int64 ui64pSrc, unsigned __int64 ui64size) = 0;
 void (*fmemfreeImpl)(unsigned __int64 ui64pDest) = 0;
 //
+void (*finterpret_command)(
+    unsigned __int64  CMDid,
+    unsigned __int64  CMDpBuf,
+    unsigned __int64  CMDsize,
+    unsigned __int64& RPLpBuf,
+    unsigned __int64& RPLsize) = 0;
+//
 unsigned __int32 single_command(
     unsigned __int64 ui64fgetCmdCB,
     unsigned __int64 ui64falcRplCB,
@@ -38,6 +45,9 @@ unsigned __int32 single_command(
     // [1] free far_ui64pui64pParam
     ffreeFarMemImpl(far_ui64pui64pParam, sizeof(unsigned __int64));
 
+    if (!far_ui64pParam)
+        return 0ui32;
+
     // [2] pParam = malloc
     sParam* pParam = (sParam*)fmallocImpl(sizeof(sParam));
     printf(" + " "pParam: %#p" "\n", pParam);
@@ -57,18 +67,7 @@ unsigned __int32 single_command(
     // [4] ui64RPLpBuf = malloc < reply buf
     unsigned __int64 ui64RPLsize = 0ui64;
     unsigned __int64 ui64RPLpBuf = 0;
-    if (pParam->ui64CMDid == (eCmdID)ECHO)
-    {
-        ui64RPLsize = pParam->ui64CMDsize;
-        ui64RPLpBuf = fmallocImpl(ui64RPLsize);
-        fmemcpyImpl(ui64RPLpBuf, ui64CMDpBuf, ui64RPLsize);
-    }
-    else if (pParam->ui64CMDid == (eCmdID)PING)
-    {
-        ui64RPLsize = 5;
-        ui64RPLpBuf = fmallocImpl(ui64RPLsize);
-        fmemcpyImpl(ui64RPLpBuf, (unsigned __int64)"pong", ui64RPLsize);
-    }
+    finterpret_command(pParam->ui64CMDid, ui64CMDpBuf, pParam->ui64CMDsize, ui64RPLpBuf, ui64RPLsize);
     printf(" + " "ui64RPLsize: %u" "\n", ui64RPLsize);
     printf(" + " "ui64RPLpBuf: %#p '%s'" "\n", ui64RPLpBuf, ui64RPLpBuf);
 

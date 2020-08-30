@@ -14,6 +14,15 @@ extern unsigned __int64 (*fmallocImpl)(unsigned __int64 ui64size);
 extern void (*fmemcpyImpl)(unsigned __int64 ui64pDest, unsigned __int64 ui64pSrc, unsigned __int64 ui64size);
 extern void (*fmemfreeImpl)(unsigned __int64 ui64pDest);
 //
+extern void (*finterpret_command)
+(
+    unsigned __int64  CMDid,
+    unsigned __int64  CMDpBuf,
+    unsigned __int64  CMDsize,
+    unsigned __int64& RPLpBuf,
+    unsigned __int64& RPLsize
+);
+//
 unsigned __int32 single_command
 (
     unsigned __int64 ui64fgetCmdCB,

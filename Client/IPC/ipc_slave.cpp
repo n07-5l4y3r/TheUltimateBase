@@ -64,7 +64,7 @@ unsigned __int32 __cdecl getCmdCB(unsigned __int64 ui64pui64pParam)
 {
 	printf(" > " __FUNCTION__ "\n");
 
-	auto pParam = ipc_queue.pop();
+	auto pParam = ipc_queue.is_empty() ? (sParam*)nullptr : ipc_queue.pop();
 	auto ui64pParam = (unsigned __int64)pParam;
 	auto pui64pParam = (unsigned __int64*)ui64pui64pParam;
 	return memcpy_s(pui64pParam, sizeof(unsigned __int64), &ui64pParam, sizeof(unsigned __int64));
