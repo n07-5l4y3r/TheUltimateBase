@@ -3,7 +3,7 @@
 #include "ipc.h"
 
 extern unsigned __int32 (*fallocFarMemImpl)(unsigned __int64* pui64pDest, unsigned __int64 ui64Size);
-extern unsigned __int32 (*ffreeFarMemImpl)(unsigned __int64* pui64pDest, unsigned __int64 ui64Size);
+extern unsigned __int32 (*ffreeFarMemImpl)(unsigned __int64 ui64pDest, unsigned __int64 ui64Size);
 //
 extern unsigned __int32 (*freadFarMemImpl)(unsigned __int64 ui64pSrc, void* pDest, unsigned __int64 ui64Size);
 extern unsigned __int32 (*fwriteFarMemImpl)(void* pSrc, unsigned __int64 ui64pDest, unsigned __int64 ui64Size);
