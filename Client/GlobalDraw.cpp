@@ -199,26 +199,21 @@ namespace GLOBALS
 
 int main()
 {
-	sCmd oCmd = { };
-	oCmd.eCmdId = sCmd::echo;
-	oCmd.ui64Size = 5ui64;
-	oCmd.ui64pParam = (unsigned __int64)"test";
-	oCmd.ui32Reply = 0ui32;
+	{
+		auto pParam = queueCmd(eCmdID::ECHO, (unsigned char*)"test", 5);
+		auto oParam = getFuture(pParam).get();
+		freeCmd(pParam);
+		std::cout << " > " << "RPLpBuf: " << (char*)oParam.ui64RPLpBuf << std::endl;
+		std::cout << " > " << "RPLsize:  " << oParam.ui64RPLsize << std::endl;
+	}
 
-	auto oFuture = queue_cmd(oCmd);
-	auto v = oFuture.get();
-	std::cout << " > " << "ui32Reply: " << v.ui32Reply << std::endl;
-	std::cout << " > " << "pParam:  " << (char*)v.ui64pParam << std::endl;
-
-	oCmd.eCmdId = sCmd::ping;
-	oCmd.ui64Size = 5ui64;
-	oCmd.ui64pParam = (unsigned __int64)"ping";
-	oCmd.ui32Reply = 0ui32;
-
-	oFuture = queue_cmd(oCmd);
-	v = oFuture.get();
-	std::cout << " > " << "ui32Reply: " << v.ui32Reply << std::endl;
-	std::cout << " > " << "pParam:  " << (char*)v.ui64pParam << std::endl;
+	{
+		auto pParam = queueCmd(eCmdID::PING, (unsigned char*)"ping", 5);
+		auto oParam = getFuture(pParam).get();
+		freeCmd(pParam);
+		std::cout << " > " << "RPLpBuf: " << (char*)oParam.ui64RPLpBuf << std::endl;
+		std::cout << " > " << "RPLsize:  " << oParam.ui64RPLsize << std::endl;
+	}
 
 	system("pause");
 
