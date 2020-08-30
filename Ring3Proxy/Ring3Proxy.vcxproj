@@ -18,12 +18,27 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Client\IPC\ipc.h" />
+    <ClInclude Include="..\Client\IPC\ipc_master.hpp" />
+    <ClInclude Include="inc.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Client\IPC\ipc_master.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Default</CompileAs>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{50D68457-A4D1-4187-8E54-3FD5CA141270}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>GlobalDraw</RootNamespace>
+    <ProjectGuid>{00b487f6-8178-4b5c-b12b-01e54f40a367}</ProjectGuid>
+    <RootNamespace>Ring3Proxy</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Ring3Master</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -74,30 +89,24 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
-    <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
+    <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)out\$(Configuration)\$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)tmp\$(Configuration)\$(PlatformShortName)\$(ProjectName)\</IntDir>
-    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -109,26 +118,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -144,10 +135,21 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -163,31 +165,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="DD_Overlay\DD_Overlay.cpp" />
-    <ClCompile Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.cpp" />
-    <ClCompile Include="GlobalDraw.cpp" />
-    <ClCompile Include="ID2D1_Renderer\ID2D1_Renderer.cpp" />
-    <ClCompile Include="ID2D1_Renderer\render.cpp" />
-    <ClCompile Include="ID2D1_Renderer\ui.cpp" />
-    <ClCompile Include="input\input.cpp" />
-    <ClCompile Include="IPC\ipc_master.cpp" />
-    <ClCompile Include="IPC\ipc_slave.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="DD_Overlay\DD_Overlay.hpp" />
-    <ClInclude Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.hpp" />
-    <ClInclude Include="ID2D1_Renderer\ID2D1_Renderer.hpp" />
-    <ClInclude Include="ID2D1_Renderer\render.h" />
-    <ClInclude Include="ID2D1_Renderer\ui.h" />
-    <ClInclude Include="inc.hpp" />
-    <ClInclude Include="input\input.h" />
-    <ClInclude Include="IPC\ipc.h" />
-    <ClInclude Include="IPC\ipc_master.hpp" />
-    <ClInclude Include="IPC\ipc_slave.hpp" />
-    <ClInclude Include="IPC\ts_map\ts_map.hpp" />
-    <ClInclude Include="IPC\ts_queue\ts_queue.hpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

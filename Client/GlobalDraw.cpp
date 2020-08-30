@@ -200,6 +200,28 @@ namespace GLOBALS
 int main()
 {
 	unsigned uZoom = 120;
+
+	while (true)
+	{
+		printf("------------------------------------------------------" "\n");
+		{
+			auto pParam = queueCmd(eCmdID::ECHO, (unsigned char*)"test", 5);
+			auto oParam = getFuture(pParam).get();
+			std::cout << " > " << "RPLpBuf: " << (char*)oParam.ui64RPLpBuf << std::endl;
+			std::cout << " > " << "RPLsize:  " << oParam.ui64RPLsize << std::endl;
+			freeCmd(pParam);
+		}
+		printf("------------------------------------------------------" "\n");
+		{
+			auto pParam = queueCmd(eCmdID::PING, (unsigned char*)"ping", 5);
+			auto oParam = getFuture(pParam).get();
+			std::cout << " > " << "RPLpBuf: " << (char*)oParam.ui64RPLpBuf << std::endl;
+			std::cout << " > " << "RPLsize:  " << oParam.ui64RPLsize << std::endl;
+			freeCmd(pParam);
+		}
+		system("pause");
+	}
+
 	unsigned uWidth = 16 * uZoom;
 	unsigned uHeight = 9 * uZoom;
 

@@ -39,3 +39,6 @@
 
 //d2d
 #include "ID2D1_Renderer/ID2D1_Renderer.hpp"
+
+//ipc
+#include "IPC/ipc_slave.hpp"
