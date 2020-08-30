@@ -1,5 +1,7 @@
 #include "ipc_master.hpp"
 
+#include <cstdio>
+
 unsigned __int32 (*fallocFarMemImpl)(unsigned __int64* pui64pDest, unsigned __int64 ui64Size) = 0;
 unsigned __int32 (*ffreeFarMemImpl)(unsigned __int64 ui64pDest, unsigned __int64 ui64Size) = 0;
 //
@@ -18,9 +20,12 @@ unsigned __int32 single_command(
     unsigned __int64 ui64fsetRplCB
 )
 {
+    printf(" > " __FUNCTION__ "\n");
+
     // [1] far_ui64pui64pParam = malloc
     unsigned __int64 far_ui64pui64pParam = 0ui64;
     fallocFarMemImpl(&far_ui64pui64pParam, sizeof(unsigned __int64));
+    printf(" + " "far_ui64pui64pParam: %#p" "\n", far_ui64pui64pParam);
 
     // * far_ui64pui64pParam = (ui64) pParam
     fexecThreadImpl(ui64fgetCmdCB, far_ui64pui64pParam);
@@ -28,21 +33,25 @@ unsigned __int32 single_command(
     // far_ui64pParam = * far_ui64pui64pParam
     unsigned __int64 far_ui64pParam = 0ui64;
     freadFarMemImpl(far_ui64pui64pParam, &far_ui64pParam, sizeof(unsigned __int64));
+    printf(" + " "far_ui64pParam: %#p" "\n", far_ui64pParam);
 
     // [1] free far_ui64pui64pParam
     ffreeFarMemImpl(far_ui64pui64pParam, sizeof(unsigned __int64));
 
     // [2] pParam = malloc
     sParam* pParam = (sParam*)fmallocImpl(sizeof(sParam));
+    printf(" + " "pParam: %#p" "\n", pParam);
 
     // pParam < far_ui64pParam
     freadFarMemImpl(far_ui64pParam, pParam, sizeof(sParam));
 
     // [3] ui64CMDpBuf = malloc
     unsigned __int64 ui64CMDpBuf = fmallocImpl(pParam->ui64CMDsize);
+    printf(" + " "ui64CMDsize: %u" "\n", pParam->ui64CMDsize);
 
     //ui64CMDpBuf <- pParam->ui64CMDpBuf
     freadFarMemImpl(pParam->ui64CMDpBuf, (void*)ui64CMDpBuf, pParam->ui64CMDsize);
+    printf(" + " "ui64CMDpBuf: %#p '%s'" "\n", ui64CMDpBuf, ui64CMDpBuf);
 
     // ui64RPLsize = reply size
     // [4] ui64RPLpBuf = malloc < reply buf
@@ -60,6 +69,8 @@ unsigned __int32 single_command(
         ui64RPLpBuf = fmallocImpl(ui64RPLsize);
         fmemcpyImpl(ui64RPLpBuf, (unsigned __int64)"pong", ui64RPLsize);
     }
+    printf(" + " "ui64RPLsize: %u" "\n", ui64RPLsize);
+    printf(" + " "ui64RPLpBuf: %#p '%s'" "\n", ui64RPLpBuf, ui64RPLpBuf);
 
     // [3] free ui64CMDpBuf
     fmemfreeImpl(ui64CMDpBuf);

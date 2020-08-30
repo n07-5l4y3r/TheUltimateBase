@@ -13,12 +13,12 @@ class ts_map {
 	std::mutex _m;
 public:
 	void remove(K key) {
-		printf("   " "   " "   " " > " __FUNCTION__ "\n");
+		printf(" > " __FUNCTION__ "\n");
 		std::lock_guard<std::mutex> lk(this->_m);
 		this->_map.erase(key);
 	}
 	void add(K key) {
-		printf("   " "   " "   " " > " __FUNCTION__ "\n");
+		printf(" > " __FUNCTION__ "\n");
 		std::lock_guard<std::mutex> lk(this->_m);
 		this->_map[key] = V();
 	}

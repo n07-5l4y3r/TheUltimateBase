@@ -9,12 +9,12 @@ class ts_queue {
 	std::mutex _m;
 public:
 	void push(_Ty value) {
-		printf("   " "   " "   " " > " __FUNCTION__ "\n");
+		printf(" > " __FUNCTION__ "\n");
 		std::lock_guard<std::mutex> lk(this->_m);
 		this->_queue.push(value);
 	}
 	_Ty pop() {
-		printf("   " "   " "   " " > " __FUNCTION__ "\n");
+		printf(" > " __FUNCTION__ "\n");
 		std::lock_guard<std::mutex> lk(this->_m);
 		auto copy = this->_queue.front();
 		this->_queue.pop();
