@@ -22,6 +22,12 @@ HANDLE intel_driver::Load()
 		return nullptr;
 	}
 
+	std::cout << "[ ] '" << driver_path << "'" << std::endl;
+
+	system("pause");
+
+	
+
 	if (!service::RegisterAndStart(driver_path))
 	{
 		std::cout << "[-] Failed to register and start service for the vulnerable driver" << std::endl;
