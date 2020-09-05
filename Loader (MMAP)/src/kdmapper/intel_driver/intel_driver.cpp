@@ -310,7 +310,7 @@ bool intel_driver::GetNtGdiGetCOPPCompatibleOPMInformationInfo(HANDLE device_han
 
 	if (!kernel_function_ptr || kernel_original_jmp_bytes[0] == 0)
 	{
-		const uint64_t kernel_NtGdiGetCOPPCompatibleOPMInformation = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress("win32kfull.sys"), "NtGdiGetCOPPCompatibleOPMInformation");
+		const uint64_t kernel_NtGdiGetCOPPCompatibleOPMInformation = GetKernelModuleExport(device_handle, utils::GetKernelModuleAddress("win32kbase.sys"), "NtGdiGetCOPPCompatibleOPMInformation");
 
 		if (!kernel_NtGdiGetCOPPCompatibleOPMInformation)
 		{
