@@ -24,9 +24,7 @@ HANDLE intel_driver::Load()
 
 	std::cout << "[ ] '" << driver_path << "'" << std::endl;
 
-	system("pause");
-
-	
+	//system("pause");
 
 	if (!service::RegisterAndStart(driver_path))
 	{

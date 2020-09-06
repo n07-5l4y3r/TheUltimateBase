@@ -11,6 +11,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ring0Proxy", "Ring0Proxy\Ri
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Loader (MMAP)", "Loader (MMAP)\Loader (MMAP).vcxproj", "{518E0636-BA8F-459D-ACAC-81BD33475E3E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51A02ECA-C281-4CC8-89AE-FCD10835A12A}"
+	ProjectSection(SolutionItems) = preProject
+		idea.md = idea.md
+		README.MD = README.MD
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
