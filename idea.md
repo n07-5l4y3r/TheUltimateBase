@@ -2,11 +2,11 @@
 typedef unsigned __int64 uint64_t;
 typedef struct __sCmd {
     uint64_t case_number;
-	uint64_t reserved;
-	uint64_t qRet;
-	uint64_t qFunction;
+    uint64_t reserved;
+    uint64_t qRet;
+    uint64_t qFunction;
     uint64_t qParam2;
-	uint64_t qParam3;
+    uint64_t qParam3;
     uint64_t qParam4;
 } sCmd;
 
@@ -50,20 +50,20 @@ unsigned __int64 call_gate(__sCmd *) ENDP           ; call_gate
 arg_18$ = 18h
 arg_10$ = 10h
 $call_gate_shellcode:
-	mov		r8,						QWORD PTR [rdi+30h]			;mov  rcx, pCmd->qParam4
-	mov		rdx,					QWORD PTR [rdi+28h]			;mov  rcx, pCmd->qParam3
-	mov		rcx,					QWORD PTR [rdi+20h]			;mov  rcx, pCmd->qParam2
-	call	QWORD PTR [rdi+18h]									;call pCmd->qFunction
-	xor		rbx,					rbx							;mov  rbx, 0
-	mov     QWORD PTR [rdi+10h],	rax							;mov  pCmd->qRet, rax
-	mov		rax,					rbx							;mov  rax, 0
-	mov     rdi, 					QWORD PTR [rsp+38h+arg_18]	;
-	mov     rbx, 					QWORD PTR [rsp+38h+arg_10]	;
-	add		rsp,					38h							;
-	retn														;
+    mov     r8,                     QWORD PTR [rdi+30h]         ;mov  rcx, pCmd->qParam4
+    mov     rdx,                    QWORD PTR [rdi+28h]         ;mov  rcx, pCmd->qParam3
+    mov     rcx,                    QWORD PTR [rdi+20h]         ;mov  rcx, pCmd->qParam2
+    call    QWORD PTR [rdi+18h]                                 ;call pCmd->qFunction
+    xor     rbx,                    rbx                         ;mov  rbx, 0
+    mov     QWORD PTR [rdi+10h],    rax                         ;mov  pCmd->qRet, rax
+    mov     rax,                    rbx                         ;mov  rax, 0
+    mov     rdi,                    QWORD PTR [rsp+38h+arg_18]  ;
+    mov     rbx,                    QWORD PTR [rsp+38h+arg_10]  ;
+    add     rsp,                    38h                         ;
+    retn                                                        ;
 ```
 
 
 ```asm
-    jmp		$call_gate_shellcode
+    jmp     $call_gate_shellcode
 ```
