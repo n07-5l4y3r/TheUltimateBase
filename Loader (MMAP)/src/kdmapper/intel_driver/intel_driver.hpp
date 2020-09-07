@@ -83,8 +83,22 @@ namespace intel_driver
 	template<typename T>
 	bool CallKernelFunction2(HANDLE device_handle, unsigned __int64* pResult, unsigned __int64 pFunc, unsigned __int64 pPar1, unsigned __int64 pPar2, unsigned __int64 pPar3)
 	{
-		if (!kernel_function_address)
+		/*
+			check params
+		*/
+
+		if (!pFunc)
 			return false;
+
+		/*
+			place call gate
+		*/
+
+
+
+		/*
+			exec call gate
+		*/
 
 		struct __CALLGATE_BUFFER {
 			uint64_t case_number;
@@ -105,7 +119,12 @@ namespace intel_driver
 		if (!DeviceIoControl(device_handle, ioctl1, &callgate_buffer, sizeof(__CALLGATE_BUFFER), nullptr, 0, &bytes_returned, nullptr))
 			return false;
 
-		*pResult = callgate_buffer.qRet;
+		/*
+			get retval
+		*/
+
+		if (pResult)
+			*pResult = callgate_buffer.qRet;
 	}
 
 #pragma warning( push )
