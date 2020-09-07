@@ -80,53 +80,6 @@ namespace intel_driver
 	bool GetNtGdiGetCOPPCompatibleOPMInformationInfo(HANDLE device_handle, uint64_t* out_kernel_function_ptr, uint8_t* out_kernel_original_bytes);
 	bool ClearMmUnloadedDrivers(HANDLE device_handle);
 
-	template<typename T>
-	bool CallKernelFunction2(HANDLE device_handle, unsigned __int64* pResult, unsigned __int64 pFunc, unsigned __int64 pPar1, unsigned __int64 pPar2, unsigned __int64 pPar3)
-	{
-		/*
-			check params
-		*/
-
-		if (!pFunc)
-			return false;
-
-		/*
-			place call gate
-		*/
-
-
-
-		/*
-			exec call gate
-		*/
-
-		struct __CALLGATE_BUFFER {
-			uint64_t case_number;
-			uint64_t reserved;
-			uint64_t qRet;
-			uint64_t qFunction;
-			uint64_t qParam2;
-			uint64_t qParam3;
-			uint64_t qParam4;
-		} callgate_buffer = { 0 };
-		callgate_buffer.case_number = 50ui64;
-		callgate_buffer.reserved = 0ui64;
-		callgate_buffer.qFunction = pFunc;
-		callgate_buffer.qParam2 = pPar1;
-		callgate_buffer.qParam3 = pPar2;
-		callgate_buffer.qParam4 = pPar3;
-		DWORD bytes_returned = 0;
-		if (!DeviceIoControl(device_handle, ioctl1, &callgate_buffer, sizeof(__CALLGATE_BUFFER), nullptr, 0, &bytes_returned, nullptr))
-			return false;
-
-		/*
-			get retval
-		*/
-
-		if (pResult)
-			*pResult = callgate_buffer.qRet;
-	}
-
 #pragma warning( push )
 #pragma warning( disable: 6387 )
 #pragma warning( disable: 4267 )

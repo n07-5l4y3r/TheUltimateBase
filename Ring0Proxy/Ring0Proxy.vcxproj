@@ -269,7 +269,7 @@
       <BrowseInformation>true</BrowseInformation>
       <EnablePREfast>false</EnablePREfast>
       <TreatWarningAsError>false</TreatWarningAsError>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DRIVER;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Sync</ExceptionHandling>
     </ClCompile>
     <Link>
@@ -297,6 +297,7 @@
       <EnablePREfast>false</EnablePREfast>
       <TreatWarningAsError>false</TreatWarningAsError>
       <ExceptionHandling>Sync</ExceptionHandling>
+      <PreprocessorDefinitions>DRIVER;_WIN64;_AMD64_;AMD64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>false</GenerateDebugInformation>
@@ -316,6 +317,8 @@
     <FilesToPackage Include="$(TargetPath)" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Client\IPC\ipc.h" />
+    <ClInclude Include="..\Client\IPC\ipc_master.hpp" />
     <ClInclude Include="src\exceptionhandler.hpp" />
     <ClInclude Include="src\inc.hpp" />
     <ClInclude Include="src\main.hpp" />
@@ -325,6 +328,7 @@
     <ClInclude Include="src\WORK_QUEUE_ITEM\WORK_QUEUE_ITEM.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Client\IPC\ipc_master.cpp" />
     <ClCompile Include="src\exceptionhandler.cpp" />
     <ClCompile Include="src\inc.cpp" />
     <ClCompile Include="src\main.cpp" />

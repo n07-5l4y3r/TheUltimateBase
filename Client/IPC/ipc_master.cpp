@@ -1,6 +1,11 @@
 #include "ipc_master.hpp"
 
+#ifdef DRIVER
+#include <inc.hpp>
+#define printf DbgPrint
+#else
 #include <cstdio>
+#endif
 
 unsigned __int32 (*fallocFarMemImpl)(unsigned __int64* pui64pDest, unsigned __int64 ui64Size) = 0;
 unsigned __int32 (*ffreeFarMemImpl)(unsigned __int64 ui64pDest, unsigned __int64 ui64Size) = 0;
