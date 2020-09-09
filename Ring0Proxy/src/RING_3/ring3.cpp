@@ -33,6 +33,34 @@ namespace ring3
 		return ret;
 	}
 
+	NTSTATUS KeVirtualFreeEx(PEPROCESS Process, PVOID* BaseAddress, PSIZE_T RegionSize, ULONG FreeType)
+	{
+		DbgPrint(" [>] \"" __FUNCTION__ "\"" "\n");
+
+		NTSTATUS ret = STATUS_ACCESS_DENIED;
+		if (NULL != Process)
+		{
+			KeAttachProcess(Process);
+
+			ret = ZwFreeVirtualMemory(NtCurrentProcess(), BaseAddress, RegionSize, FreeType);
+
+			KeDetachProcess();
+		}
+
+		if (!NT_SUCCESS(ret))
+		{
+			DbgPrint(" [-] KeVirtualFreeEx failed!"	"\n");
+			DbgPrint(" [ ] pEPROCESS:       %p"			"\n", Process);
+			DbgPrint(" [ ] ppBase:          %p"			"\n", BaseAddress);
+			DbgPrint(" [ ] pBase:           %p"			"\n", *BaseAddress);
+			DbgPrint(" [ ] ullSize:         %llu"		"\n", *RegionSize);
+			DbgPrint(" [ ] uFreeType:		%u"			"\n", FreeType);
+			DbgPrint(" [ ] ret:				%#lx"		"\n", ret);
+		}
+
+		return ret;
+	}
+
 	NTSTATUS LockAndReadProcessMemory(PEPROCESS Process, PVOID SourceAddress, PVOID TargetAddress, SIZE_T Size)
 	{
 		DbgPrint(" [>] \"" __FUNCTION__ "\"" "\n");

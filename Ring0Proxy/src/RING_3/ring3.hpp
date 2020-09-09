@@ -7,6 +7,7 @@ namespace ring3
 	NTSTATUS FindProcessByName(char* process_name, PEPROCESS* process);
 
 	NTSTATUS KeVirtualAllocEx(PEPROCESS Process, PVOID* BaseAddress, ULONG_PTR ZeroBits, PSIZE_T RegionSize, ULONG AllocationType, ULONG Protect);
+	NTSTATUS KeVirtualFreeEx(PEPROCESS Process, PVOID* BaseAddress, PSIZE_T RegionSize, ULONG FreeType);
 
 	NTSTATUS LockAndReadProcessMemory(PEPROCESS Process, PVOID SourceAddress, PVOID TargetAddress, SIZE_T Size);
 	NTSTATUS LockAndWriteProcessMemory(PEPROCESS Process, PVOID SourceAddress, PVOID TargetAddress, SIZE_T Size);

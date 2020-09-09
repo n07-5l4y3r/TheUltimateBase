@@ -6,6 +6,7 @@ NTSTATUS quit(PSTR sReason, NTSTATUS reason)
 	return reason;
 }
 
+PEPROCESS		 pEPROCESS	   = NULL;
 unsigned __int64 ui64fgetCmdCB = 0ui64;
 unsigned __int64 ui64falcRplCB = 0ui64;
 unsigned __int64 ui64fsetRplCB = 0ui64;
@@ -24,45 +25,47 @@ NTSTATUS DriverEntry(
 	fallocFarMemImpl = [](unsigned __int64* pui64pDest, unsigned __int64 ui64Size) -> unsigned __int32
 	{
 		DbgPrint(" > " "fallocFarMemImpl" "\n");
-		*pui64pDest = (unsigned __int64)VirtualAllocEx(hProcess, (LPVOID)*pui64pDest, ui64Size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+		SIZE_T Size = ui64Size;
+		*pui64pDest = (unsigned __int64)ring3::KeVirtualAllocEx(pEPROCESS, (PVOID*)pui64pDest, 0, &Size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 		return bool(!*pui64pDest);
 	};
 	DbgPrint(" + " "fallocFarMemImpl: %#p" "\n", fallocFarMemImpl);
 	ffreeFarMemImpl = [](unsigned __int64 ui64pDest, unsigned __int64 ui64Size) -> unsigned __int32
 	{
 		DbgPrint(" > " "ffreeFarMemImpl" "\n");
-		return VirtualFreeEx(hProcess, (LPVOID)ui64pDest, 0, MEM_RELEASE);
+		PVOID pDest = (PVOID)ui64pDest;
+		return NT_SUCCESS(ring3::KeVirtualFreeEx(pEPROCESS, &pDest, 0, MEM_RELEASE));
 	};
 	DbgPrint(" + " "ffreeFarMemImpl: %#p" "\n", ffreeFarMemImpl);
 	//
 	freadFarMemImpl = [](unsigned __int64 ui64pSrc, void* pDest, unsigned __int64 ui64Size) -> unsigned __int32
 	{
 		DbgPrint(" > " "freadFarMemImpl" "\n");
-		return ReadProcessMemory(hProcess, (LPCVOID)ui64pSrc, pDest, ui64Size, 0);
+		return NT_SUCCESS(ring3::KeReadProcessMemory(pEPROCESS, (PVOID)ui64pSrc, pDest, ui64Size));
 	};
 	DbgPrint(" + " "freadFarMemImpl: %#p" "\n", freadFarMemImpl);
 	fwriteFarMemImpl = [](void* pSrc, unsigned __int64 ui64pDest, unsigned __int64 ui64Size) -> unsigned __int32
 	{
 		DbgPrint(" > " "fwriteFarMemImpl" "\n");
-		return WriteProcessMemory(hProcess, (LPVOID)ui64pDest, pSrc, ui64Size, 0);
+		return NT_SUCCESS(ring3::KeWriteProcessMemory(pEPROCESS, pSrc, (PVOID)ui64pDest, ui64Size));
 	};
 	DbgPrint(" + " "fwriteFarMemImpl: %#p" "\n", fwriteFarMemImpl);
 	//
 	fexecThreadImpl = [](unsigned __int64 ui64pDest, unsigned __int64 ui64pParam) -> unsigned __int32
 	{
 		DbgPrint(" > " "fexecThreadImpl" "\n");
-		auto hThread = CreateRemoteThread(hProcess, 0, 0, (LPTHREAD_START_ROUTINE)ui64pDest, (LPVOID)ui64pParam, 0, 0);
-		auto uRetval = WaitForSingleObject(hThread, INFINITE);
-		if (uRetval)
-			DbgPrint("   ""   ""uRetval:%u""\n", uRetval);
-		return uRetval;
+		NTSTATUS dwRpl = NULL;
+		NTSTATUS dwRet = ring3::KeExecuteTargetRoutine(pEPROCESS, (PVOID)ui64pDest, (PVOID)ui64pParam, &dwRpl);
+		if (!NT_SUCCESS(dwRet))
+			DbgPrint("   ""   ""uRetval:%u""\n", dwRet);
+		return dwRpl;
 	};
 	DbgPrint(" + " "fexecThreadImpl: %#p" "\n", fexecThreadImpl);
 	//
 	fmallocImpl = [](unsigned __int64 ui64size) -> unsigned __int64
 	{
 		DbgPrint(" > " "fmallocImpl" "\n");
-		return (unsigned __int64)malloc(ui64size);
+		return (unsigned __int64)ExAllocatePool(NonPagedPool, ui64size);
 	};
 	DbgPrint(" + " "fmallocImpl: %#p" "\n", fmallocImpl);
 	fmemcpyImpl = [](unsigned __int64 ui64pDest, unsigned __int64 ui64pSrc, unsigned __int64 ui64size) -> void
@@ -74,7 +77,7 @@ NTSTATUS DriverEntry(
 	fmemfreeImpl = [](unsigned __int64 ui64pDest) -> void
 	{
 		DbgPrint(" > " "fmemfreeImpl" "\n");
-		free((void*)ui64pDest);
+		ExFreePool((void*)ui64pDest);
 	};
 	DbgPrint(" + " "fmemfreeImpl: %#p" "\n", fmemfreeImpl);
 	finterpret_command = [](
@@ -102,7 +105,6 @@ NTSTATUS DriverEntry(
 	DbgPrint(" + " "finterpret_command: %#p" "\n", finterpret_command);
 
 	// Find Target
-	PEPROCESS pEPROCESS = NULL;
 	if (!NT_SUCCESS(ring3::FindProcessByName("Client.exe", &pEPROCESS)))
 		return STATUS_SUCCESS;
 
