@@ -8,6 +8,7 @@
 #include <string>
 #include <iomanip>
 #include <sstream>
+#include <deque>
 
 #pragma comment(lib, "ddraw.lib")
 #pragma comment(lib, "dxguid.lib")
