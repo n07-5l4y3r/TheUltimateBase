@@ -4,6 +4,7 @@ bool ui::c_ui::setup()
 {
 	//
 	this->was_setup = true;
+	this->gcursor();
 	this->svars();
 	return this->was_setup;
 }
@@ -30,13 +31,36 @@ void ui::c_ui::bg()
 {
 	render_utils::render->text("menu is active", 0.6f, 15.f, RGBA({ 0,255,0,255 }), "Consolas0.8");
 	//
-	render_utils::render->frect(this->menu_x / this->dpi_x, this->menu_y / this->dpi_y, 18.f, 14.f, RGBA({ 147,112,219,255 }));
+	render_utils::render->frect(this->menu_x / this->dpi_x, this->menu_y / this->dpi_y, 18.f, 18.f, RGBA({ 147,112,219,255 }));
 	//
 	render_utils::render->frect(this->cursor_x / this->dpi_x, this->cursor_y / this->dpi_y, 0.4f, 0.4f, RGBA({ 255,255,255,255 }));
+}
+void ui::c_ui::rvars()
+/*
+renders given objects registered and precalculated for the current menu layout and position
+*/
+{
+	for (auto&& b : this->vars)
+	{
+		switch (b.i_type)
+		{
+		case ui::e_menu_types::e_invalid: break;
+		case ui::e_menu_types::e_button:
+		{
+			auto tt = (ui::s_menu_button*)(b.container);
+			//TODO: align width from all objects on page to max text size+pad to make all objects the same general size
+			render_utils::render->orect(b.pos.d_x, b.pos.d_y, b.pos.p_x, b.pos.p_y, 0.1f, RGBA({ 155,255,0,255 }));
+			render_utils::render->text(tt->name, b.pos.d_x, b.pos.d_y, RGBA({ 0,255,0,255 }), "Consolas0.6");
+			break;
+		}
+		default: break;
+		}
+	}
 }
 void ui::c_ui::render()
 {
 	this->bg();
+	this->rvars();
 }
 void ui::c_ui::move()
 {
@@ -75,18 +99,48 @@ bool ui::c_ui::svars()
 {
 	if (!this->avar("test-01", 0, e_menu_types::e_button, (uint64_t)button_test_func)) return false;
 	if (!this->avar("test-02", 0, e_menu_types::e_button, (uint64_t)button_test_func2)) return false;
+	if (!this->avar("test-03", 0, e_menu_types::e_button, (uint64_t)button_test_func)) return false;
+	if (!this->avar("test-04", 0, e_menu_types::e_button, (uint64_t)button_test_func2)) return false;
+	if (!this->avar("test-05", 0, e_menu_types::e_button, (uint64_t)button_test_func)) return false;
+	if (!this->avar("test-06", 0, e_menu_types::e_button, (uint64_t)button_test_func2)) return false;
+	if (!this->avar("test-07", 0, e_menu_types::e_button, (uint64_t)button_test_func)) return false;
+	this->cvars();
 	return true;
 }
 bool ui::c_ui::cvars()
 /*
 calculates relative positions for each variable added prior to fit in the menu layout&bounds
+x l/r -
+y u/d |
 */
 {
+	auto x_pad = 50; auto y_pad = 20;
+	auto x_continuous = 5; auto y_continuous = 10; auto cur_count = 0; auto lines_filled = 1;//1=0(1*50=50, 50 default pad)
 	for (auto&& v : this->vars)
 	{
-		//@@@
+		if (cur_count == 5) 
+		{ 
+			cur_count = 0; 
+			y_continuous = 10;
+			lines_filled++;
+			x_continuous += x_pad + 15; 
+		}
+		y_continuous += y_pad + 10;
+		v.pos = ui::s_menu_pos();
+		v.pos.d_x = (x_continuous + this->menu_x) / this->dpi_x;
+		v.pos.d_y = (y_continuous + this->menu_y) / this->dpi_y;
+		v.pos.p_x = x_pad / this->dpi_x; v.pos.p_y = y_pad / this->dpi_y;
+		/*
+			auto x1 = this->menu_x / this->dpi_x;
+			auto y1 = (this->menu_y) / this->dpi_y; auto y2 = (this->menu_x / 2) / this->dpi_y;
+
+			if (this->isbound(this->cursor_x / this->dpi_x, x1, x1 + y2) 
+				this->isbound(this->cursor_y / this->dpi_y, y1, y1 + y2))
+
+		*/
+		cur_count++;
 	}
-	return false;
+	return true;
 }
 float ui::c_ui::gdpix()
 {

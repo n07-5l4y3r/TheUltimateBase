@@ -58,8 +58,9 @@ namespace ui
 	};
 	struct s_menu_pos
 	{
-		int d_x; int d_y;//draw
-		int m_x; int m_y;//cursor
+		float d_x; float d_y;//draw
+		float m_x; float m_y;//cursor
+		float p_x; float p_y;//pad
 	};
 	struct s_menu_var
 	{
@@ -91,6 +92,7 @@ namespace ui
 		bool isbound(float v, float m, float h);
 		//
 		void bg();
+		void rvars();
 		void render();
 		//
 		void move();

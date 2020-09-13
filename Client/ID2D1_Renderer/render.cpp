@@ -5,7 +5,7 @@ render_utils::s_font::s_font()
 bool render_utils::c_render::setup(ID2D1Factory* rinst, ID2D1RenderTarget* rtinst, IDWriteFactory* iwinst)
 {
 	this->d2d_factory = rinst; this->d2d_render_target = rtinst; this->dwrite_factory = iwinst;
-	this->mfont("Consolas", 0.8f);
+	this->mfont("Consolas", 0.8f); this->mfont("Consolas", 0.4f); this->mfont("Consolas", 0.6f);
 	this->mbrush(RGBA({ 0, 255, 0, 255 }));
 	this->was_setup = true;
 	return true;
