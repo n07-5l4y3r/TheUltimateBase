@@ -23,7 +23,10 @@ private:
 	HRESULT CreateRenderTarget();
 	void	SetViewPort();
 public:
-	IDXGISurface* QuerypDXGISurface();
+	IDXGISurface* GpDXGISurface();
+	ID3D11Device* GpDevice();
+	ID3D11DeviceContext* GpDeviceContext();
+	ID3D11RenderTargetView* GpRenderTargetView();
 	HRESULT CaptureTexture(D3D11_TEXTURE2D_DESC& desc, ID3D11Texture2D*& pStaging);
 public:
 	DX11_BackgroundRenderer(unsigned uWidth, unsigned uHeight, HWND hWnd);

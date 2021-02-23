@@ -119,6 +119,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,6 +156,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -170,9 +172,14 @@
     <ClCompile Include="ID2D1_Renderer\ID2D1_Renderer.cpp" />
     <ClCompile Include="ID2D1_Renderer\render.cpp" />
     <ClCompile Include="ID2D1_Renderer\ui.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="input\input.cpp" />
-    <ClCompile Include="IPC\ipc_master.cpp" />
-    <ClCompile Include="IPC\ipc_slave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DD_Overlay\DD_Overlay.hpp" />
@@ -180,13 +187,16 @@
     <ClInclude Include="ID2D1_Renderer\ID2D1_Renderer.hpp" />
     <ClInclude Include="ID2D1_Renderer\render.h" />
     <ClInclude Include="ID2D1_Renderer\ui.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="imgui\imgui_impl_win32.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="inc.hpp" />
     <ClInclude Include="input\input.h" />
-    <ClInclude Include="IPC\ipc.h" />
-    <ClInclude Include="IPC\ipc_master.hpp" />
-    <ClInclude Include="IPC\ipc_slave.hpp" />
-    <ClInclude Include="IPC\ts_map\ts_map.hpp" />
-    <ClInclude Include="IPC\ts_queue\ts_queue.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

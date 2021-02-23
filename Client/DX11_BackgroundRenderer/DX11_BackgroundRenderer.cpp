@@ -117,7 +117,7 @@ void DX11_BackgroundRenderer::SetViewPort()
 	this->pImmediateContext->RSSetViewports(1, &viewport);
 }
 
-IDXGISurface* DX11_BackgroundRenderer::QuerypDXGISurface()
+IDXGISurface* DX11_BackgroundRenderer::GpDXGISurface()
 {
 	if (!this->pIDXGISurface)
 	{
@@ -132,6 +132,21 @@ IDXGISurface* DX11_BackgroundRenderer::QuerypDXGISurface()
 		printf("    [+] pIDXGISurface = %#p\r\n", this->pIDXGISurface);
 	}
 	return this->pIDXGISurface;
+}
+
+ID3D11Device* DX11_BackgroundRenderer::GpDevice()
+{
+	return this->pDevice;
+}
+
+ID3D11DeviceContext* DX11_BackgroundRenderer::GpDeviceContext()
+{
+	return this->pImmediateContext;
+}
+
+ID3D11RenderTargetView* DX11_BackgroundRenderer::GpRenderTargetView()
+{
+	return this->pBackBuffer;
 }
 
 HRESULT DX11_BackgroundRenderer::CaptureTexture(D3D11_TEXTURE2D_DESC& desc, ID3D11Texture2D*& pStaging) {
@@ -257,7 +272,7 @@ DX11_BackgroundRenderer::DX11_BackgroundRenderer(unsigned uWidth, unsigned uHeig
 		return;
 	if (CreateBackBuffer() != S_OK)
 		return;
-	if (this->QuerypDXGISurface() == nullptr)
+	if (this->GpDXGISurface() == nullptr)
 		return;
 	if (CreateRenderTarget() != S_OK)
 		return;

@@ -1,80 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="DD_Overlay\DD_Overlay.cpp" />
+    <ClCompile Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.cpp" />
+    <ClCompile Include="GlobalDraw.cpp" />
+    <ClCompile Include="ID2D1_Renderer\ID2D1_Renderer.cpp" />
+    <ClCompile Include="ID2D1_Renderer\render.cpp" />
+    <ClCompile Include="ID2D1_Renderer\ui.cpp" />
+    <ClCompile Include="input\input.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="imgui\imgui_impl_dx11.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GlobalDraw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DD_Overlay\DD_Overlay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ID2D1_Renderer\ID2D1_Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ID2D1_Renderer\render.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="input\input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ID2D1_Renderer\ui.cpp">
-    <ClCompile Include="IPC\ipc_slave.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IPC\ipc_master.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="inc.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DD_Overlay\DD_Overlay.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ID2D1_Renderer\ID2D1_Renderer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ID2D1_Renderer\render.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="input\input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ID2D1_Renderer\ui.h">
-    <ClInclude Include="IPC\ts_map\ts_map.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IPC\ts_queue\ts_queue.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IPC\ipc_slave.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IPC\ipc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IPC\ipc_master.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="DD_Overlay\DD_Overlay.hpp" />
+    <ClInclude Include="DX11_BackgroundRenderer\DX11_BackgroundRenderer.hpp" />
+    <ClInclude Include="ID2D1_Renderer\ID2D1_Renderer.hpp" />
+    <ClInclude Include="ID2D1_Renderer\render.h" />
+    <ClInclude Include="ID2D1_Renderer\ui.h" />
+    <ClInclude Include="inc.hpp" />
+    <ClInclude Include="input\input.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_impl_win32.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imgui_impl_dx11.h" />
   </ItemGroup>
 </Project>

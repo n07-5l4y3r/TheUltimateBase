@@ -9,6 +9,11 @@
 #include <iomanip>
 #include <sstream>
 
+//imgui
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx11.h"
+#include "imgui/imgui.h"
+
 #pragma comment(lib, "ddraw.lib")
 #pragma comment(lib, "dxguid.lib")
 #include <ddraw.h>
@@ -39,6 +44,3 @@
 
 //d2d
 #include "ID2D1_Renderer/ID2D1_Renderer.hpp"
-
-//ipc
-#include "IPC/ipc_slave.hpp"

@@ -2,18 +2,21 @@
 
 #include <inc.hpp>
 
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	switch (message)
+
+	switch (msg)
 	{
+	case WM_SYSCOMMAND:
+		if ((wParam & 0xfff0) == SC_KEYMENU) // Disable ALT application menu
+			return 0;
+		break;
 	case WM_DESTROY:
-	{
-		PostQuitMessage(0);
+		::PostQuitMessage(0);
 		return 0;
-	} break;
 	}
 
-	return DefWindowProc(hWnd, message, wParam, lParam);
+	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
 HWND CreateRenderWindow(unsigned uWidth, unsigned uHeight)
@@ -197,6 +200,8 @@ namespace GLOBALS
 	ID2D1_Renderer*				pID2D1_Renderer = nullptr;
 }
 
+ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
 int main()
 {
 	unsigned uZoom = 120;
@@ -227,18 +232,45 @@ int main()
 
 	printf(" > Init...\n");
 
+	system("pause");
+
 	//HWND hWnd = GetConsoleWindow();
 	HWND hWnd = CreateRenderWindow(uWidth, uHeight);
 
 	GLOBALS::pDD_Overlay = new DD_Overlay(uWidth, uHeight);
 	GLOBALS::pDX11_BackgroundRenderer = new DX11_BackgroundRenderer(uWidth, uHeight, hWnd);
-	GLOBALS::pID2D1_Renderer = new ID2D1_Renderer(uWidth, uHeight, GLOBALS::pDX11_BackgroundRenderer->QuerypDXGISurface());
+	GLOBALS::pID2D1_Renderer = new ID2D1_Renderer(uWidth, uHeight, GLOBALS::pDX11_BackgroundRenderer->GpDXGISurface());
 	render_utils::render = new render_utils::c_render();
 	input::input = new input::c_input();
 	ui::ui = new ui::c_ui();
 
 	printf("\n > Hide Render Preview Window\n");
 	ShowWindow(hWnd, SW_HIDE);
+
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO&io = ImGui::GetIO(); (void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+	//io.ConfigViewportsNoAutoMerge = true;
+	//io.ConfigViewportsNoTaskBarIcon = true;
+	//io.ConfigViewportsNoDefaultParent = true;
+	//io.ConfigDockingAlwaysTabBar = true;
+	//io.ConfigDockingTransparentPayload = true;
+	//io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;     // FIXME-DPI: Experimental. THIS CURRENTLY DOESN'T WORK AS EXPECTED. DON'T USE IN USER APP!
+	//io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports; // FIXME-DPI: Experimental.
+	io.DisplaySize.x = uWidth;
+	io.DisplaySize.y = uHeight;
+
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsClassic();
+
+	// Setup Renderer backend
+	ImGui_ImplDX11_Init(GLOBALS::pDX11_BackgroundRenderer->GpDevice(), GLOBALS::pDX11_BackgroundRenderer->GpDeviceContext());
 
 	printf("\n > Render Loop...\n");
 
@@ -258,6 +290,8 @@ int main()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 
+			printf("msg: 0x%x\n", msg.message);
+
 			if (msg.message == WM_QUIT)
 			{
 				printf("\n > wmquit\n");
@@ -268,6 +302,39 @@ int main()
 		{
 			auto hResult = GLOBALS::pDX11_BackgroundRenderer->Draw([](ID3D11Device* pDevice, ID3D11DeviceContext* pContext, ID3D11RenderTargetView* pRenderTargetView) -> HRESULT
 				{
+
+					// Start the Dear ImGui frame
+					ImGui_ImplDX11_NewFrame();
+					ImGui::NewFrame();
+
+					{
+						static float f = 0.0f;
+						static int counter = 0;
+
+						ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+						ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+
+						ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+						ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+						if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+							counter++;
+						ImGui::SameLine();
+						ImGui::Text("counter = %d", counter);
+
+						ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+						ImGui::End();
+					}
+
+					// Rendering
+					ImGui::Render();
+					
+					pContext->OMSetRenderTargets(1, &pRenderTargetView, NULL);
+					//const float clear_color_with_alpha[4] = { clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w };
+					//pContext->ClearRenderTargetView(pRenderTargetView, clear_color_with_alpha);
+					ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
 					return S_OK;
 				}
 			);
@@ -282,6 +349,7 @@ int main()
 		{
 			auto hResult = GLOBALS::pID2D1_Renderer->Draw([](ID2D1_Renderer* pInst, ID2D1RenderTarget* pRenderTarget) -> HRESULT
 				{
+					/*
 					pRenderTarget->BeginDraw();
 					pRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
@@ -306,6 +374,8 @@ int main()
 						ui::ui->work();
 					}
 					return pRenderTarget->EndDraw();
+					*/
+					return S_OK;
 				}
 			);
 			if (hResult != DD_OK)
